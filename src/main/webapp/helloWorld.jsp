@@ -16,8 +16,8 @@
     </h2>
 
 	<ul>
-		<li><a href="?lang=en">english</a></li>
-		<li><a href="?lang=ua">українська</a></li>
+		<li><a href="?lang=en"><fmt:message key="label.lang.en" /></a></li>
+		<li><a href="?lang=ua"><fmt:message key="label.lang.ua" /></a></li>
 	</ul>
 </body>
 </html>
