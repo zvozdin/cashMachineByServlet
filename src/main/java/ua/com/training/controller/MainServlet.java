@@ -1,4 +1,4 @@
-package com.epam.controller;
+package ua.com.training.controller;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

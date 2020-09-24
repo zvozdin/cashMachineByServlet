@@ -9,7 +9,7 @@
 
     <servlet>
         <servlet-name>MainServlet</servlet-name>
-        <servlet-class>com.epam.controller.MainServlet</servlet-class>
+        <servlet-class>ua.com.training.controller.MainServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
