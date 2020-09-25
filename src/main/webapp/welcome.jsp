@@ -14,7 +14,7 @@
             <input type="radio" name="role" value="${role}" />${role}
             <br>
         </c:forEach>
-
+        <br>
         <input type="submit" value="Select" />
     </form>
 </body>

@@ -11,9 +11,14 @@
         <servlet-name>MainServlet</servlet-name>
         <servlet-class>ua.com.training.controller.MainServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>MainServlet</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+    <error-page>
+        <!-- Missing login -->
+        <error-code>401</error-code>
+        <location>/general-error.jsp</location>
+    </error-page>
 </web-app>

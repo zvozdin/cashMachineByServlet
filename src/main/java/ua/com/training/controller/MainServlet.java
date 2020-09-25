@@ -1,6 +1,8 @@
 package ua.com.training.controller;
 
 import ua.com.training.dao.Roles;
+import ua.com.training.service.Service;
+import ua.com.training.service.ServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,8 +14,15 @@ import java.util.EnumSet;
 
 public class MainServlet extends HttpServlet {
 
+    private Service service;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        service = new ServiceImpl();
+    }
+
     // todo make logout by including jsp
-    // todo error page by mapping error
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = getAction(request);
@@ -27,20 +36,29 @@ public class MainServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = getAction(request);
+
         if (action.startsWith("/login")) {
             HttpSession session = request.getSession();
-            String role = session.getAttribute("role").toString();
-            switch (role) {
+            Object role = session.getAttribute("role");
+            switch (role.toString()) {
                 case "SENIOR_CASHIER":
                     // todo database. retrieve and check for null or by Optional
-                    if (true) {
-                        String password = request.getParameter("password");
+                    if (service.existSeniorCashierByLogin(
+                            request.getParameter("login"), request.getParameter("password"))) {
+//                        session.setAttribute("");
                         response.sendRedirect("seniorCashier.jsp");
+                    } else {
+                        session.removeAttribute("role");
+                        response.setStatus(401);
+                        // todo error page by mapping error
+                        response.sendRedirect("general-error.jsp?error=Try Again");
                     }
                     break;
                 default:
-                        // do nothing
+                    // do nothing
             }
+
+            return;
         }
     }
 

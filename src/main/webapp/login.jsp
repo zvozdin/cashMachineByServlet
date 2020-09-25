@@ -10,17 +10,25 @@
 	<form action="login" method="post">
         <c:choose>
             <c:when test="${param.role=='SENIOR_CASHIER'}">
-                ${param.role} password:
+                ${param.role}
+                <br>
+                login:
+                <br>
+                <input type="text" name="login" value="admin"/>
+                <br>
+                password:
                 <br>
                 <input type="password" name="password">
                 <br>
             </c:when>
             <c:otherwise>
-                ${param.role} login:
+                ${param.role}
+                <br>
+                login:
                 <br>
                 <input type="text" name="login" value=""/>
                 <br>
-                Password:
+                password:
                 <br>
                 <input type="password" name="password">
                 <br>
