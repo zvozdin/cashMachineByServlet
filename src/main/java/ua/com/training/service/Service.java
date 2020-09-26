@@ -1,5 +1,6 @@
 package ua.com.training.service;
 
 public interface Service {
-    boolean existSeniorCashierByLogin(String login, String password);
+
+    boolean existUserByRoleAndLogin(String role, String login, String password);
 }
