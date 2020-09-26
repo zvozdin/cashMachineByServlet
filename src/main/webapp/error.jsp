@@ -5,8 +5,6 @@
 <title>Enter</title>
 </head>
 <body>
-${param.error}
-	<br>
-	activities
+    ${error}
 </body>
 </html>
