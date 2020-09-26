@@ -22,18 +22,38 @@
                 <input type="password" name="password" required />
                 <br>
             </c:when>
-            <c:otherwise>
+            <c:when test="${param.role=='CASHIER'}">
                 ${param.role}
                 <br>
                 login:
                 <br>
-                <input type="text" name="login" value="" required/>
+                <select name="login">
+                    <c:forEach items="${sessionScope.cashiers}" var="cashier">
+                        <option value="${cashier.login}">${cashier.login}</option>
+                    </c:forEach>
+                </select>
                 <br>
                 password:
                 <br>
                 <input type="password" name="password" required />
                 <br>
-            </c:otherwise>
+            </c:when>
+            <c:when test="${param.role=='COMMODITY_EXPERT'}">
+                ${param.role}
+                <br>
+                login:
+                <br>
+                <select name="login">
+                    <c:forEach items="${sessionScope.commodityExperts}" var="commodityExpert">
+                        <option value="${commodityExpert.login}">${commodityExpert.login}</option>
+                    </c:forEach>
+                </select>
+                <br>
+                password:
+                <br>
+                <input type="password" name="password" required />
+                <br>
+            </c:when>
         </c:choose>
         <br>
 
