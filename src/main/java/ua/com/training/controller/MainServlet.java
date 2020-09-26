@@ -14,6 +14,7 @@ import java.util.EnumSet;
 
 public class MainServlet extends HttpServlet {
 
+    public static final String REGISTRATION_FIELDS_NOT_EMPTY = "Login and Password field can't be empty";
     private Service service;
 
     @Override
@@ -23,42 +24,38 @@ public class MainServlet extends HttpServlet {
     }
 
     // todo make logout by including jsp
+
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = getAction(request);
 
-        if (action.startsWith("/")) {
+        if (action.equals("/")) {
             request.setAttribute("roles", EnumSet.allOf(Roles.class));
             request.getRequestDispatcher("welcome.jsp").forward(request, response);
         }
-    }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String action = getAction(request);
-
-        if (action.startsWith("/login")) {
+        if (action.equals("/login")) {
             HttpSession session = request.getSession();
-            Object role = session.getAttribute("role");
-            switch (role.toString()) {
-                case "SENIOR_CASHIER":
-                    // todo database. retrieve and check for null or by Optional
-                    if (service.existSeniorCashierByLogin(
-                            request.getParameter("login"), request.getParameter("password"))) {
-//                        session.setAttribute("");
+            String login = request.getParameter("login");
+            String password = request.getParameter("password");
+            String role = session.getAttribute("role").toString();
+            if (!login.isEmpty() && !password.isEmpty()
+                    && service.existUserByRoleAndLogin(role, login, password)) {
+                session.setAttribute("role", role);
+                switch (role) {
+                    case "SENIOR_CASHIER":
                         response.sendRedirect("seniorCashier.jsp");
-                    } else {
-                        session.removeAttribute("role");
-                        response.setStatus(401);
-                        // todo error page by mapping error
-                        response.sendRedirect("general-error.jsp?error=Try Again");
-                    }
-                    break;
-                default:
-                    // do nothing
+                        break;
+                    case "CASHIER":
+                        response.sendRedirect("general-error.jsp?error=" + REGISTRATION_FIELDS_NOT_EMPTY);
+                        break;
+                    case "COMMODITY_EXPERT":
+                        response.sendRedirect("general-error.jsp?error=" + REGISTRATION_FIELDS_NOT_EMPTY);
+                        break;
+                }
+            } else {
+                response.sendRedirect("general-error.jsp?error=" + REGISTRATION_FIELDS_NOT_EMPTY);
             }
-
-            return;
         }
     }
 
