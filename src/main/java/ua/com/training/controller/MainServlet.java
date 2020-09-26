@@ -2,7 +2,7 @@ package ua.com.training.controller;
 
 import ua.com.training.controller.command.Action;
 import ua.com.training.controller.command.Login;
-import ua.com.training.controller.command.Welcome;
+import ua.com.training.controller.command.Logout;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -17,9 +17,10 @@ public class MainServlet extends HttpServlet {
     private Map<String, Action> actions;
 
     public MainServlet() {
+        // todo initialize in another place or class
         actions = new HashMap<>();
-        actions.put("/", new Welcome());
         actions.put("/login", new Login());
+        actions.put("/logout", new Logout());
     }
 
     @Override
@@ -27,23 +28,18 @@ public class MainServlet extends HttpServlet {
         super.init();
     }
 
-    // todo make logout by including jsp
-
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String actionKey = getAction(request);
-
+        String actionKey = request.getRequestURI();
         Action action = actions.get(actionKey);
-        action.execute(request, response);
+
+        String page = action.execute(request, response);
+        response.sendRedirect(page);
+//        request.getRequestDispatcher(forward).forward(request, response);
     }
 
     @Override
     public void destroy() {
         super.destroy();
-    }
-
-    private String getAction(HttpServletRequest req) {
-        String requestURI = req.getRequestURI();
-        return requestURI.substring(req.getContextPath().length());
     }
 }

@@ -1,5 +1,6 @@
 package ua.com.training.controller.command;
 
+import ua.com.training.dao.Roles;
 import ua.com.training.service.Service;
 import ua.com.training.service.ServiceImpl;
 
@@ -11,31 +12,38 @@ import java.io.IOException;
 
 public class Login implements Action {
 
-    public static final String REGISTRATION_FIELDS_NOT_CORRECT = "Login or Password aren't correct";
+    private static final String REGISTRATION_FIELDS_NOT_CORRECT = "Login or Password aren't correct";
     private Service service = new ServiceImpl();
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         String login = request.getParameter("login");
         String password = request.getParameter("password");
+        String role = request.getParameter("role");
         HttpSession session = request.getSession();
-        String role = session.getAttribute("role").toString();
+        if (role == null) {
+            // todo don't set message error
+            session.setAttribute("error", REGISTRATION_FIELDS_NOT_CORRECT);
+            return "error.jsp";
+        }
+
         if (service.existUserByRoleAndLogin(role, login, password)) {
             switch (role) {
                 case "SENIOR_CASHIER":
-                    response.sendRedirect("seniorCashier.jsp");
-                    return;
+                    session.setAttribute("LOGIN_USER", login);
+                    session.setAttribute("ROLE", Roles.SENIOR_CASHIER);
+                    return "seniorCashier.jsp";
                 case "CASHIER":
-                    response.sendRedirect("cashier.jsp");
-                    return;
+                    session.setAttribute("LOGIN_USER", login);
+                    session.setAttribute("ROLE", Roles.CASHIER);
+                    return "cashier.jsp";
                 case "COMMODITY_EXPERT":
-                    response.sendRedirect("commodityExpert.jsp");
-                    return;
+                    session.setAttribute("LOGIN_USER", login);
+                    session.setAttribute("ROLE", Roles.COMMODITY_EXPERT);
+                    return "commodityExpert.jsp";
             }
-        } else {
-//            session.removeAttribute("role");
-            request.setAttribute("error", REGISTRATION_FIELDS_NOT_CORRECT);
-            request.getRequestDispatcher("error.jsp").forward(request, response);
         }
+        request.setAttribute("error", REGISTRATION_FIELDS_NOT_CORRECT);
+        return "error.jsp";
     }
 }

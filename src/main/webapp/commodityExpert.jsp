@@ -8,5 +8,8 @@
 	Welcome commodityExpert
 	<br>
 	activities
+		<br>
+    	<br>
+	<a href="logout">logout</a>
 </body>
 </html>

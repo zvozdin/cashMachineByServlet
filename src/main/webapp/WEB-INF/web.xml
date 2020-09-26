@@ -7,6 +7,10 @@
 
     <display-name>cashMachineByServlet</display-name>
 
+    <welcome-file-list>
+        <welcome-file>login.jsp</welcome-file>
+    </welcome-file-list>
+
     <servlet>
         <servlet-name>MainServlet</servlet-name>
         <servlet-class>ua.com.training.controller.MainServlet</servlet-class>
@@ -16,4 +20,12 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+    <filter>
+        <filter-name>SessionFilter</filter-name>
+        <filter-class>ua.com.training.controller.SessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>SessionFilter</filter-name>
+        <url-pattern>/*</url-pattern> <!-- url from where you implement the filtering -->
+    </filter-mapping>
 </web-app>

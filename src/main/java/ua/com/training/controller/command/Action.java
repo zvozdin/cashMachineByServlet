@@ -7,5 +7,5 @@ import java.io.IOException;
 
 public interface Action {
 
-    void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
+    String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException;
 }

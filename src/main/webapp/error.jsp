@@ -5,6 +5,6 @@
 <title>Enter</title>
 </head>
 <body>
-    ${error}
+    ${sessionScope.error}
 </body>
 </html>
