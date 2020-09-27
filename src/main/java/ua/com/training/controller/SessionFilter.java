@@ -1,24 +1,24 @@
 package ua.com.training.controller;
 
 import ua.com.training.dao.Roles;
-import ua.com.training.service.Service;
-import ua.com.training.service.ServiceImpl;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.EnumSet;
+import java.util.*;
 
 public class SessionFilter implements Filter {
 
-    private String contextPath;
-    private Service service;
+    private static Map<Roles, List<String>> roleRights;
 
     @Override
     public void init(FilterConfig fc) throws ServletException {
-        contextPath = fc.getServletContext().getContextPath();
-        service = new ServiceImpl();
+        roleRights = new HashMap<>();
+        roleRights.put(Roles.SENIOR_CASHIER, Arrays.asList("/seniorCashier.jsp"));
+        roleRights.put(Roles.CASHIER, Arrays.asList("/cashier.jsp"));
+        roleRights.put(Roles.COMMODITY_EXPERT, Arrays.asList("/commodityExpert.jsp"));
     }
 
     @Override
@@ -26,38 +26,41 @@ public class SessionFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         request.setAttribute("roles", EnumSet.allOf(Roles.class));
-        chain.doFilter(req, res);
 
-//        if (accessAllowed(request)) {
-//            chain.doFilter(request, response);
-//        } else {
-//            String error = "You do not have permission to access the requested resource";
-//            request.setAttribute("error", error);
-//            request.getRequestDispatcher("error.jsp")
-//                    .forward(request, response);
-//        }
-
-
+        if (isAccess(request)) {
+            chain.doFilter(req, res);
+        } else {
+            response.sendRedirect("login.jsp");
+        }
     }
 
+    private boolean isAccess(HttpServletRequest request) {
+        String action = request.getRequestURI().substring(request.getContextPath().length());
+        HttpSession session = request.getSession(false);
 
-//         else if (session != null) {
-//            session.setAttribute("cashiers", service.findAllCashiersLogin());
-//            session.setAttribute("commodityExperts", service.findAllCommodityExpertsLogin());
-//        } else if (session.getAttribute("LOGIN_USER") == null) {
-//            request.getRequestDispatcher("login.jsp?role=" + request.getParameter("role")).forward(request, response);
-//        } else {
-//            chain.doFilter(req, res); // Logged-in user found, so just continue request.
-//        }
-//    }
+        if (action.equals("/login.jsp")) {
+            return true;
+        }
 
-//    private boolean accessAllowed(HttpServletRequest request) {
-//        HttpSession session = request.getSession(false);
-//        if (session == null) {
-//            return false;
-//        }
-//        return false;
-//    }
+        if (session == null) {
+            return false;
+        }
+
+        if (action.equals("/login") || action.equals("/logout")) {
+            return true;
+        }
+
+        if (action == null || action.equals("/")) {
+            return false;
+        }
+
+        Roles role = (Roles) session.getAttribute("ROLE");
+        if (role == null) {
+            return false;
+        }
+
+        return roleRights.get(role).contains(action);
+    }
 
     @Override
     public void destroy() {

@@ -30,12 +30,12 @@ public class MainServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String actionKey = request.getRequestURI();
+        String requestURI = request.getRequestURI();
+        String actionKey = requestURI.substring(request.getContextPath().length());
         Action action = actions.get(actionKey);
-
         String page = action.execute(request, response);
+
         response.sendRedirect(page);
-//        request.getRequestDispatcher(forward).forward(request, response);
     }
 
     @Override

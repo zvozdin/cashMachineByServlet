@@ -26,6 +26,6 @@
     </filter>
     <filter-mapping>
         <filter-name>SessionFilter</filter-name>
-        <url-pattern>/*</url-pattern> <!-- url from where you implement the filtering -->
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 </web-app>
