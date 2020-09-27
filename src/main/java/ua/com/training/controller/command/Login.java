@@ -32,6 +32,14 @@ public class Login implements Action {
         String role = request.getParameter("role");
         HttpSession session = request.getSession();
 
+        if (login == null || login.isEmpty()
+                || password == null || password.isEmpty()
+                || role == null || role.isEmpty()
+        ) {
+            session.setAttribute("error", REGISTRATION_FIELDS_NOT_CORRECT);
+            return "error.jsp";
+        }
+
         if (new UserDao().findUserByRoleAndLoginAndPassword(role, login, password) != null) {
             switch (role) {
                 case "SENIOR_CASHIER":
