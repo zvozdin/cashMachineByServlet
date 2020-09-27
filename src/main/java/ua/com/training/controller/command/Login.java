@@ -1,8 +1,7 @@
 package ua.com.training.controller.command;
 
+import ua.com.training.dao.UserDao;
 import ua.com.training.dao.entity.Roles;
-import ua.com.training.service.Service;
-import ua.com.training.service.ServiceImpl;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +16,6 @@ import java.util.Map;
 public class Login implements Action {
 
     private static final String REGISTRATION_FIELDS_NOT_CORRECT = "Login or Password aren't correct";
-    // todo implement UserDao instead Service
-    private Service service = new ServiceImpl();
     private static Map<Roles, List<String>> roleActivities;
 
     public Login() {
@@ -35,7 +32,7 @@ public class Login implements Action {
         String role = request.getParameter("role");
         HttpSession session = request.getSession();
 
-        if (service.existUserByRoleAndLogin(role, login, password)) {
+        if (new UserDao().findUserByRoleAndLoginAndPassword(role, login, password) != null) {
             switch (role) {
                 case "SENIOR_CASHIER":
                     setLoginSessionAttributes(login, session, Roles.SENIOR_CASHIER);

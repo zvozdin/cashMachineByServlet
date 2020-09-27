@@ -52,7 +52,7 @@ CREATE TABLE products
 	id INT AUTO_INCREMENT NOT NULL,
     code VARCHAR(20) UNIQUE NOT NULL,
 	name VARCHAR(20) UNIQUE NOT NULL,
-    size VARCHAR(20) NOT NULL,
+    size VARCHAR(20) NOT NULL NULL,
     quantity INT NOT NULL,
     price double NOT NULL,
     expert_id INT NOT NULL,
@@ -111,3 +111,7 @@ insert into products(code, name, size, quantity, price, expert_id)
 values ('2001', 'shirt', 'S', 15, 20, 1);
 insert into products(code, name, size, quantity, price, expert_id) 
 values ('2002', 'shirt', 'L', 20, 20, 2);
+
+SELECT login FROM cashiers c inner JOIN roles r ON c.role_id=r.id;
+
+SELECT login FROM commodity_experts e inner JOIN roles r ON e.role_id=r.id;
