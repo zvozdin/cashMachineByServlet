@@ -1,6 +1,6 @@
 package ua.com.training.controller;
 
-import ua.com.training.dao.Roles;
+import ua.com.training.dao.entity.Roles;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;

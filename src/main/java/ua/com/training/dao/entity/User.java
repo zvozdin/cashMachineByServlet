@@ -1,9 +1,8 @@
-package ua.com.training.model;
-
-import ua.com.training.dao.Roles;
+package ua.com.training.dao.entity;
 
 public class User {
 
+    private Long id;
     private String login;
     private String password;
     private String name;
@@ -11,13 +10,6 @@ public class User {
     private Roles role;
 
     public User() {
-    }
-
-    public User(String login, String password, String name, String surname) {
-        this.login = login;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
     }
 
     public String getLogin() {
@@ -58,5 +50,13 @@ public class User {
 
     public void setRole(Roles role) {
         this.role = role;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }

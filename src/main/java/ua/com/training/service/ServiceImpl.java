@@ -1,7 +1,7 @@
 package ua.com.training.service;
 
 import ua.com.training.dao.DatabaseConnectionPool;
-import ua.com.training.model.User;
+import ua.com.training.dao.entity.User;
 
 import java.sql.Connection;
 import java.sql.ResultSet;

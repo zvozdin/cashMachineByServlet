@@ -1,6 +1,6 @@
 package ua.com.training.service;
 
-import ua.com.training.model.User;
+import ua.com.training.dao.entity.User;
 
 import java.util.List;
 
