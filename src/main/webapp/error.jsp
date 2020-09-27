@@ -2,9 +2,11 @@
 
 <html>
 <head>
-<title>Enter</title>
+<title>Error</title>
 </head>
 <body>
     ${sessionScope.error}
+    <br>
+    <a href="/login.jsp">main</a>
 </body>
 </html>

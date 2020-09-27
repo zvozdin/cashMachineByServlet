@@ -38,7 +38,7 @@ public class SessionFilter implements Filter {
         String action = request.getRequestURI().substring(request.getContextPath().length());
         HttpSession session = request.getSession(false);
 
-        if (action.equals("/login.jsp")) {
+        if (action.equals("/login.jsp") || action.equals("/error.jsp")) {
             return true;
         }
 

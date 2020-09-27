@@ -45,7 +45,7 @@ public class Login implements Action {
                     return "commodityExpert.jsp";
             }
         }
-        request.setAttribute("error", REGISTRATION_FIELDS_NOT_CORRECT);
+        session.setAttribute("error", REGISTRATION_FIELDS_NOT_CORRECT);
         return "error.jsp";
     }
 
