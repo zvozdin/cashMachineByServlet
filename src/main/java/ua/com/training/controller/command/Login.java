@@ -24,8 +24,8 @@ public class Login implements Action {
     public Login() {
         roleActivities = new HashMap<>();
         roleActivities.put(Roles.SENIOR_CASHIER, Arrays.asList("cancel_order", "cancel_order_product", "make_Z_report"));
-        roleActivities.put(Roles.CASHIER, Arrays.asList("/cashier.jsp"));
-        roleActivities.put(Roles.COMMODITY_EXPERT, Arrays.asList("view_products", "add_product", "change_quantity"));
+        roleActivities.put(Roles.CASHIER, Arrays.asList("create", "add", "change", "close"));
+        roleActivities.put(Roles.COMMODITY_EXPERT, Arrays.asList("view", "add", "change"));
     }
 
     @Override
