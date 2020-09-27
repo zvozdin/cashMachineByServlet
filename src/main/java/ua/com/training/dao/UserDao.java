@@ -13,7 +13,7 @@ public class UserDao {
             "SELECT * FROM %s WHERE login='%s' AND password='%s'";
 
     public User findUserByRoleAndLoginAndPassword(String role, String login, String password) {
-        User user = null;
+        User user = new User();
         String sql = String.format(
                 FIND_USER_BY_LOGIN_AND_PASSWORD_FROM_ROLE_TABLE, getTableNameByRole(role), login, password);
         try (Connection connection = DatabaseConnectionPool.getConnection();
@@ -29,7 +29,7 @@ public class UserDao {
             // todo log exception
             e.printStackTrace();
         }
-        return null;
+        return user;
     }
 
     private String getTableNameByRole(String role) {

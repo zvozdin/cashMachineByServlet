@@ -1,6 +1,7 @@
 package ua.com.training.controller;
 
 import ua.com.training.controller.command.Action;
+import ua.com.training.controller.command.CommodityExpertActionsHolder;
 import ua.com.training.controller.command.Login;
 import ua.com.training.controller.command.Logout;
 
@@ -21,6 +22,7 @@ public class MainServlet extends HttpServlet {
         actions = new HashMap<>();
         actions.put("/login", new Login());
         actions.put("/logout", new Logout());
+        actions.putAll(CommodityExpertActionsHolder.getMap());
     }
 
     @Override

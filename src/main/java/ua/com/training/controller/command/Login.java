@@ -8,21 +8,18 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Login implements Action {
 
     private static final String REGISTRATION_FIELDS_NOT_CORRECT = "Login or Password aren't correct";
-    private static Map<Roles, List<String>> roleActivities;
+    private static Map<Roles, Set<String>> roleActivities;
 
     public Login() {
         roleActivities = new HashMap<>();
-        roleActivities.put(Roles.SENIOR_CASHIER, Arrays.asList("cancel_order", "cancel_order_product", "make_Z_report"));
-        roleActivities.put(Roles.CASHIER, Arrays.asList("create", "add", "change", "close"));
-        roleActivities.put(Roles.COMMODITY_EXPERT, Arrays.asList("view", "add", "change"));
+        roleActivities.put(Roles.SENIOR_CASHIER, new HashSet<>(Arrays.asList("cancel_order", "cancel_order_product", "make_Z_report")));
+        roleActivities.put(Roles.CASHIER, new HashSet<>(Arrays.asList("create", "add", "change", "close")));
+        roleActivities.put(Roles.COMMODITY_EXPERT, CommodityExpertActionsHolder.getActions());
     }
 
     @Override
@@ -40,7 +37,7 @@ public class Login implements Action {
             return "error.jsp";
         }
 
-        if (new UserDao().findUserByRoleAndLoginAndPassword(role, login, password) != null) {
+        if (new UserDao().findUserByRoleAndLoginAndPassword(role, login, password).getLogin() != null) {
             switch (role) {
                 case "SENIOR_CASHIER":
                     setLoginSessionAttributes(login, session, Roles.SENIOR_CASHIER);

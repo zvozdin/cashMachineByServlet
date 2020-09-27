@@ -16,9 +16,12 @@ public class SessionFilter implements Filter {
     @Override
     public void init(FilterConfig fc) throws ServletException {
         roleRights = new HashMap<>();
+        // todo implement actions from actions holder
         roleRights.put(Roles.SENIOR_CASHIER, Arrays.asList("/seniorCashier.jsp"));
+        // todo implement actions from actions holder
         roleRights.put(Roles.CASHIER, Arrays.asList("/cashier.jsp"));
-        roleRights.put(Roles.COMMODITY_EXPERT, Arrays.asList("/commodityExpert.jsp"));
+        // todo implement actions to map from actions holder and separate user jsp
+        roleRights.put(Roles.COMMODITY_EXPERT, Arrays.asList("/commodityExpert.jsp","/commodityExpertAllProducts.jsp", "/view"));
     }
 
     @Override
