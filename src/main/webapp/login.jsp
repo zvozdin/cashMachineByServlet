@@ -11,7 +11,7 @@
         Welcome:
         <br>
 	    <c:forEach items="${roles}" var="role">
-            <input type="radio" name="role" value="${role}" />${role}
+            <input type="radio" name="role" value="${role}" required />${role}
             <br>
         </c:forEach>
         <br>

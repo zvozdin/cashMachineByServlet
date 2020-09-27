@@ -21,11 +21,6 @@ public class Login implements Action {
         String password = request.getParameter("password");
         String role = request.getParameter("role");
         HttpSession session = request.getSession();
-        if (role == null) {
-            // todo don't set message error
-            session.setAttribute("error", REGISTRATION_FIELDS_NOT_CORRECT);
-            return "error.jsp";
-        }
 
         if (service.existUserByRoleAndLogin(role, login, password)) {
             switch (role) {
