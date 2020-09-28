@@ -3,7 +3,8 @@
 
 <html>
 <head>
-<title>Commodity Expert</title>
+    <title>Commodity Expert</title>
+    <link rel="icon" href="data:,">
 </head>
 <body>
         <table border="1" cellpadding="5" >

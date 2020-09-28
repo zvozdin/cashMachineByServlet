@@ -4,6 +4,7 @@
 <html>
 <head>
 <title>CASHIER</title>
+<link rel="icon" href="data:,">
 </head>
 <body>
 	Welcome ${sessionScope.LOGIN_USER}

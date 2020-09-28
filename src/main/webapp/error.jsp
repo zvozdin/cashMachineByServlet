@@ -3,6 +3,7 @@
 <html>
 <head>
 <title>Error</title>
+<link rel="icon" href="data:,">
 </head>
 <body>
     ${sessionScope.error}

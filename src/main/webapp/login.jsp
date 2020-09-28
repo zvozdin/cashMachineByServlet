@@ -5,6 +5,7 @@
 <html>
 <head>
 <title>Welcome</title>
+<link rel="icon" href="data:,">
 </head>
 <body>
 	<form action="login" method="post">
