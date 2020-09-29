@@ -18,8 +18,8 @@ public class Login implements Action {
     public Login() {
         roleActivities = new HashMap<>();
         roleActivities.put(Roles.SENIOR_CASHIER, new HashSet<>(Arrays.asList("cancel_order", "cancel_order_product", "make_Z_report")));
-        roleActivities.put(Roles.CASHIER, new HashSet<>(Arrays.asList("create", "add", "change", "close")));
-        roleActivities.put(Roles.COMMODITY_EXPERT, CommodityExpertActionsHolder.getActions());
+        roleActivities.put(Roles.CASHIER, new HashSet<>(Arrays.asList("create", "addBySenior", "changeBySenior", "close")));
+        roleActivities.put(Roles.COMMODITY_EXPERT, new HashSet<>(Arrays.asList("view", "add", "change")));
     }
 
     @Override

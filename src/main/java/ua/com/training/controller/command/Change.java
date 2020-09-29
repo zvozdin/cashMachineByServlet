@@ -6,8 +6,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class Change implements Action {
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        return null;
+        String execute = new View().execute(request, response);
+        return "commodityExpertChangeProductQuantity.jsp";
     }
 }

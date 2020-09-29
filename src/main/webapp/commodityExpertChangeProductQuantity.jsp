@@ -7,16 +7,20 @@
 <link rel="icon" href="data:,">
 </head>
 <body>
-	Welcome ${sessionScope.LOGIN_USER}
-	<br>
-	Menu:
-	<br>
-	<c:forEach items="${sessionScope.COMMODITY_EXPERTactivities}" var="activity">
-	    <a href="${activity}">${activity}</a>
+    <form action="update" method "post">
+        <select name="code">
+            <c:forEach var="product" items="${sessionScope.products}">
+                <option value="${product.code}">
+                    ${product.name} ${product.size}
+                </option>
+            </c:forEach>
+        </select>
+        = <input type="number" min="0" name="value" />
         <br>
-    </c:forEach>
-
+        <br>
+        <input type="submit" value="change" />
+    </form>
     <br>
-	<a href="logout">logout</a>
+	<a href="commodityExpert.jsp">main</a> <a href="logout">logout</a>
 </body>
 </html>

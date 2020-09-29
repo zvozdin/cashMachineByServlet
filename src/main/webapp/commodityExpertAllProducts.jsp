@@ -31,6 +31,6 @@
             </c:forEach>
         </table>
     <br>
-	<a href="logout">logout</a>
+	<a href="commodityExpert.jsp">main</a> <a href="logout">logout</a>
 </body>
 </html>
