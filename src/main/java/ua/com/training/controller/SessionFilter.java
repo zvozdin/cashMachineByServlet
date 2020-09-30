@@ -22,8 +22,9 @@ public class SessionFilter implements Filter {
         roleRights.put(Roles.CASHIER, Arrays.asList("/cashier.jsp"));
         // todo implement actions to map from actions holder and separate user jsp
         roleRights.put(Roles.COMMODITY_EXPERT, Arrays.asList("" +
-                "/commodityExpert.jsp", "/commodityExpertAllProducts.jsp", "/commodityExpertChangeProductQuantity.jsp", "" +
-                "/view", "/change", "/update"));
+                "/commodityExpert.jsp", "/commodityExpertAllProducts.jsp", "" +
+                "/commodityExpertChangeProductQuantity.jsp","/commodityExpertAddProduct.jsp", "" +
+                "/view", "/change", "/add", "/insert", "/update"));
     }
 
     @Override

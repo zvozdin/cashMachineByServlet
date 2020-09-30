@@ -2,6 +2,7 @@ package ua.com.training.controller.command;
 
 import ua.com.training.dao.UserDao;
 import ua.com.training.dao.entity.Roles;
+import ua.com.training.dao.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -37,16 +38,17 @@ public class Login implements Action {
             return "error.jsp";
         }
 
-        if (new UserDao().findUserByRoleAndLoginAndPassword(role, login, password).getLogin() != null) {
+        User user = new UserDao().findUserByRoleAndLoginAndPassword(role, login, password);
+        if (user != null) {
             switch (role) {
                 case "SENIOR_CASHIER":
-                    setLoginSessionAttributes(login, session, Roles.SENIOR_CASHIER);
+                    setLoginSessionAttributes(user, session, Roles.SENIOR_CASHIER);
                     return "seniorCashier.jsp";
                 case "CASHIER":
-                    setLoginSessionAttributes(login, session, Roles.CASHIER);
+                    setLoginSessionAttributes(user, session, Roles.CASHIER);
                     return "cashier.jsp";
                 case "COMMODITY_EXPERT":
-                    setLoginSessionAttributes(login, session, Roles.COMMODITY_EXPERT);
+                    setLoginSessionAttributes(user, session, Roles.COMMODITY_EXPERT);
                     return "commodityExpert.jsp";
             }
         }
@@ -54,8 +56,8 @@ public class Login implements Action {
         return "error.jsp";
     }
 
-    private void setLoginSessionAttributes(String login, HttpSession session, Roles role) {
-        session.setAttribute("LOGIN_USER", login);
+    private void setLoginSessionAttributes(User user, HttpSession session, Roles role) {
+        session.setAttribute("user", user);
         session.setAttribute("ROLE", role);
         session.setAttribute(role + "activities", roleActivities.get(role));
     }

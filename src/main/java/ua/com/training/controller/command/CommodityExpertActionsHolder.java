@@ -12,6 +12,7 @@ public class CommodityExpertActionsHolder {
         actions.put("/add", new Add());
         actions.put("/change", new Change());
         actions.put("/update", new Update());
+        actions.put("/insert", new Insert());
     }
 
     public static Set<String> getActions() {

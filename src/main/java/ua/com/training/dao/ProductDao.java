@@ -6,11 +6,16 @@ import ua.com.training.dao.entity.Size;
 import java.sql.*;
 import java.util.*;
 
-public class ProductDao {
+public class ProductDao extends Dao {
 
-    public static final String FIND_ALL_PRODUCTS = "SELECT * FROM products";
-    public static final String INSERT_PRODUCT = "insert into products(code, name, size, quantity, price, expert_id) values (?, ?, ?, ?, ?, ?)";
-    public static final String UPDATE_PRODUCT_QUANTITY_BY_CODE = "update products set quantity=? where code=?";
+    private static final String TABLE_NAME = "products";
+    private static final String FIND_ALL_PRODUCTS = "SELECT * FROM products";
+    private static final String INSERT_PRODUCT = "insert into products(code, name, size, quantity, price, expert_id) values (?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_PRODUCT_QUANTITY_BY_CODE = "update products set quantity=? where code=?";
+
+    public Set<String> getColumns() {
+        return getColumns(TABLE_NAME);
+    }
 
     public List<Product> findAllProducts() {
         List<Product> products = new ArrayList<>();
@@ -30,7 +35,6 @@ public class ProductDao {
         }
         return new ArrayList<>();
     }
-
     public boolean addProduct(Product product) {
         try (Connection connection = DatabaseConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_PRODUCT)

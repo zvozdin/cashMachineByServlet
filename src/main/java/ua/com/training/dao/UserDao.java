@@ -21,6 +21,7 @@ public class UserDao {
         ) {
             try (ResultSet resultSet = statement.executeQuery(sql)) {
                 while (resultSet.next()) {
+                    user.setId(Long.parseLong(resultSet.getString("id")));
                     user.setLogin(resultSet.getString("login"));
                 }
             }
