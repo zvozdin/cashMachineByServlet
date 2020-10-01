@@ -11,26 +11,24 @@
             <caption><h2>Products</h2></caption>
             <tr>
                 <th>id</th>
-                <th>commodityExpertId</th>
                 <th>code</th>
                 <th>name</th>
+                <th>size</th>
                 <th>price</th>
                 <th>quantity</th>
-                <th>size</th>
             </tr>
             <c:forEach items="${sessionScope.products}" var="product">
                 <tr>
                     <td style="text-align:center" >${product.id}</td>
-                    <td style="text-align:center" >${product.commodityExpertId}</td>
                     <td style="text-align:center" >${product.code}</td>
                     <td style="text-align:center" >${product.name}</td>
+                    <td style="text-align:center" >${product.size}</td>
                     <td style="text-align:center" >${product.price}</td>
                     <td style="text-align:center" >${product.quantity}</td>
-                    <td style="text-align:center" >${product.size}</td>
                 </tr>
             </c:forEach>
         </table>
     <br>
-	<a href="commodityExpert.jsp">main</a> <a href="logout">logout</a>
+	<a href="mainUser.jsp">main</a> <a href="logout">logout</a>
 </body>
 </html>

@@ -36,9 +36,9 @@ public final class DatabaseConnectionPool {
                 .append("?")
                 .append(ConnectParameters.ssl)
                 .append("&")
-                .append(ConnectParameters.useUnicode)
-                .append("&")
                 .append(ConnectParameters.encoding)
+                .append("&")
+                .append(ConnectParameters.useUnicode)
                 .toString();
     }
 }

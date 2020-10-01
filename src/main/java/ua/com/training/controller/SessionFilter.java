@@ -22,13 +22,20 @@ public class SessionFilter implements Filter {
         roleRights.put(Roles.CASHIER, Arrays.asList("/cashier.jsp"));
         // todo implement actions to map from actions holder and separate user jsp
         roleRights.put(Roles.COMMODITY_EXPERT, Arrays.asList("" +
-                "/commodityExpert.jsp", "/commodityExpertAllProducts.jsp", "" +
-                "/commodityExpertChangeProductQuantity.jsp","/commodityExpertAddProduct.jsp", "" +
+                "/commodityExpertAllProducts.jsp", "/commodityExpertChangeProductQuantity.jsp","" +
+                "/commodityExpertAddProduct.jsp", "" +
                 "/view", "/change", "/add", "/insert", "/update"));
     }
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
+        req.setCharacterEncoding("utf-8");
+        res.setCharacterEncoding("utf-8");
+
+        //todo implement localization
+
+        // todo implement back button on browser
+
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         request.setAttribute("roles", EnumSet.allOf(Roles.class));
@@ -63,6 +70,10 @@ public class SessionFilter implements Filter {
         Roles role = (Roles) session.getAttribute("ROLE");
         if (role == null) {
             return false;
+        }
+
+        if (action.equals("/mainUser.jsp")) {
+            return true;
         }
 
         return roleRights.get(role).contains(action);

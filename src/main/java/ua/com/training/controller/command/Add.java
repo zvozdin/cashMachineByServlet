@@ -14,7 +14,6 @@ public class Add implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         Set<String> columns = new ProductDao().getColumns();
         columns.remove("id");
-        columns.remove("expert_id");
         request.getSession().setAttribute("columns", columns);
         return "commodityExpertAddProduct.jsp";
     }

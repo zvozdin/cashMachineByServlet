@@ -3,7 +3,6 @@ package ua.com.training.dao.entity;
 public class Product {
 
     private Long id;
-    private Long commodityExpertId;
     private String code;
     private String name;
     private Double price;
@@ -59,13 +58,5 @@ public class Product {
 
     public void setSize(Size size) {
         this.size = size;
-    }
-
-    public Long getCommodityExpertId() {
-        return commodityExpertId;
-    }
-
-    public void setCommodityExpertId(Long commodityExpertId) {
-        this.commodityExpertId = commodityExpertId;
     }
 }

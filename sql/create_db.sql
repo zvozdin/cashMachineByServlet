@@ -11,107 +11,75 @@ CREATE TABLE roles
 	PRIMARY KEY (id)
 );
 
-CREATE TABLE senior_cashier
+CREATE TABLE users
 (
 	id INT AUTO_INCREMENT NOT NULL,
     login VARCHAR(20) UNIQUE,
     password VARCHAR(20),
-	name VARCHAR(20),
-    surname VARCHAR(20),
     role_id INT NOT NULL,
 	PRIMARY KEY (id),
     FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
 );
 
-CREATE TABLE cashiers
-(
-	id INT AUTO_INCREMENT NOT NULL,
-    login VARCHAR(20) UNIQUE,
-    password VARCHAR(20),
-	name VARCHAR(20),
-    surname VARCHAR(20),
-    role_id INT NOT NULL,
-	PRIMARY KEY (id),
-    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
-);
-
-CREATE TABLE commodity_experts
-(
-	id INT AUTO_INCREMENT NOT NULL,
-    login VARCHAR(20) UNIQUE,
-    password VARCHAR(20),
-	name VARCHAR(20),
-    surname VARCHAR(20),
-    role_id INT NOT NULL,
-	PRIMARY KEY (id),
-    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
-);
-
-CREATE TABLE products
+CREATE TABLE stock
 (
 	id INT AUTO_INCREMENT NOT NULL,
     code VARCHAR(20) UNIQUE NOT NULL,
-	name VARCHAR(20) UNIQUE NOT NULL,
+	name VARCHAR(20) NOT NULL,
     size VARCHAR(20) NOT NULL NULL,
     quantity INT NOT NULL,
     price double NOT NULL,
-    expert_id INT NOT NULL,
-	PRIMARY KEY (id),
-    FOREIGN KEY (expert_id) REFERENCES commodity_experts(id) ON update CASCADE
-);
+	PRIMARY KEY (id)
+) ENGINE InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE orders
+CREATE TABLE checks
 (
 	id INT AUTO_INCREMENT NOT NULL,
-    order_code VARCHAR(20) UNIQUE NOT NULL,
-	name VARCHAR(20) UNIQUE NOT NULL,
+    code VARCHAR(20) UNIQUE NOT NULL,
+	name_en VARCHAR(20) NOT NULL,
     quantity INT NOT NULL,
-    is_paid boolean not null,
-    status boolean NOT NULL,
+    price double NOT NULL,
+    is_paid boolean NOT NULL,
     bill INT NOT NULL,
     user_id INT NOT NULL,
+    product_id INT NOT NULL,
+    dataTime DATETIME DEFAULT NOW(),
 	PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES cashiers(id)
-);
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (product_id) REFERENCES stock(id)
+) ENGINE InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE report
 (
 	id INT AUTO_INCREMENT NOT NULL,
-    user_id INT NOT NULL,
-    quantity INT NOT NULL,
-    sum INT NOT NULL,
-	PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES cashiers(id)
+    orders_count INT NOT NULL,
+	common_bill INT NOT NULL,
+	PRIMARY KEY (id)
 );
 
 insert into roles(role) values ('SENIOR_CASHIER');
 insert into roles(role) values ('CASHIER');
 insert into roles(role) values ('COMMODITY_EXPERT');
 
-insert into senior_cashier(role_id, login, password, name, surname) 
-values (1, 'admin', 'admin', 'Admin', 'Adminovich');
+insert into users(login, password, role_id) 
+values ('admin', 'admin', 1);
+insert into users(login, password, role_id) 
+values ('cashier1', '11111', 2);
+insert into users(login, password, role_id) 
+values ('cashier2', '77777', 2);
+insert into users(login, password, role_id) 
+values ('expert1', '00000', 3);
 
-insert into cashiers(role_id, login, password, name, surname) 
-values (2, 'cashier1', '11111', 'Kasyr1', 'Kasyrov');
-insert into cashiers(role_id, login, password, name, surname) 
-values (2, 'cashier2', '22222', 'Kasyr2', 'Kasyrenko');
-insert into cashiers(role_id, login, password, name, surname) 
-values (2, 'cashier3', '33333', 'Kasyr3', 'Kasyrovych');
+insert into stock(code, name, size, quantity, price) 
+values ('1001', 'jacket', 'L', 20, 50);
+insert into stock(code, name, size, quantity, price) 
+values ('1002', 'jacket', 'M', 30, 50);
+insert into stock(code, name, size, quantity, price) 
+values ('2001', 'shirt', 'S', 15, 20);
+insert into stock(code, name, size, quantity, price) 
+values ('2002', 'shirt', 'L', 20, 20);
 
-insert into commodity_experts(role_id, login, password, name, surname) 
-values (3, 'expert1', '00000', 'Tovaroznavets', 'Tovaroznavets');
-insert into commodity_experts(role_id, login, password, name, surname) 
-values (3, 'expert2', '99999', 'Tovaroznatok', 'Tovaroznatok');
+insert into checks(code, name_en,  quantity, price, is_paid,bill,user_id,product_id) 
+values ('1001', 'jacket', 20, 50, false, 500,1,1);
 
-insert into products(code, name, size, quantity, price, expert_id) 
-values ('1001', 'jacket', 'L', 20, 50, 1);
-insert into products(code, name, size, quantity, price, expert_id) 
-values ('1002', 'jacket', 'M', 30, 50, 1);
-insert into products(code, name, size, quantity, price, expert_id) 
-values ('2001', 'shirt', 'S', 15, 20, 1);
-insert into products(code, name, size, quantity, price, expert_id) 
-values ('2002', 'shirt', 'L', 20, 20, 2);
-
-SELECT login FROM cashiers c inner JOIN roles r ON c.role_id=r.id;
-
-SELECT login FROM commodity_experts e inner JOIN roles r ON e.role_id=r.id;
+SELECT * FROM final_project_db.checks;

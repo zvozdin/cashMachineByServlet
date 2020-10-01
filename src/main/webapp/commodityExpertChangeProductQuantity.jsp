@@ -21,6 +21,6 @@
         <input type="submit" value="change" />
     </form>
     <br>
-	<a href="commodityExpert.jsp">main</a> <a href="logout">logout</a>
+	<a href="mainUser.jsp">main</a> <a href="logout">logout</a>
 </body>
 </html>

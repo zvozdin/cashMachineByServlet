@@ -1,28 +1,26 @@
 package ua.com.training.dao;
 
+import ua.com.training.dao.entity.Roles;
 import ua.com.training.dao.entity.User;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 
 public class UserDao {
 
-    private static final String FIND_USER_BY_LOGIN_AND_PASSWORD_FROM_ROLE_TABLE =
-            "SELECT * FROM %s WHERE login='%s' AND password='%s'";
+    private static final String FIND_USER_BY_LOGIN_AND_PASSWORD =
+            "SELECT u.login, r.role FROM users u JOIN roles r ON u.role_id=r.id WHERE u.login=? AND u.password=?";
 
-    public User findUserByRoleAndLoginAndPassword(String role, String login, String password) {
+    public User findUserByLoginAndPassword(String login, String password) {
         User user = new User();
-        String sql = String.format(
-                FIND_USER_BY_LOGIN_AND_PASSWORD_FROM_ROLE_TABLE, getTableNameByRole(role), login, password);
         try (Connection connection = DatabaseConnectionPool.getConnection();
-             Statement statement = connection.createStatement()
+             PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_LOGIN_AND_PASSWORD)
         ) {
-            try (ResultSet resultSet = statement.executeQuery(sql)) {
+            statement.setString(1, login);
+            statement.setString(2, password);
+            try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    user.setId(Long.parseLong(resultSet.getString("id")));
                     user.setLogin(resultSet.getString("login"));
+                    user.setRole(Roles.valueOf(resultSet.getString("role")));
                 }
             }
             return user;
@@ -31,17 +29,5 @@ public class UserDao {
             e.printStackTrace();
         }
         return user;
-    }
-
-    private String getTableNameByRole(String role) {
-        switch (role) {
-            case "SENIOR_CASHIER":
-                return "senior_cashier";
-            case "CASHIER":
-                return "cashiers";
-            case "COMMODITY_EXPERT":
-                return "commodity_experts";
-        }
-        return "";
     }
 }

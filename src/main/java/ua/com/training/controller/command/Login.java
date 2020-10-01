@@ -18,9 +18,9 @@ public class Login implements Action {
 
     public Login() {
         roleActivities = new HashMap<>();
-        roleActivities.put(Roles.SENIOR_CASHIER, new HashSet<>(Arrays.asList("cancel_order", "cancel_order_product", "make_Z_report")));
-        roleActivities.put(Roles.CASHIER, new HashSet<>(Arrays.asList("create", "addBySenior", "changeBySenior", "close")));
-        roleActivities.put(Roles.COMMODITY_EXPERT, new HashSet<>(Arrays.asList("view", "add", "change")));
+        roleActivities.put(Roles.SENIOR_CASHIER, new LinkedHashSet<>(Arrays.asList("cancel_order", "cancel_order_product", "make_Z_report")));
+        roleActivities.put(Roles.CASHIER, new LinkedHashSet<>(Arrays.asList("open", "changeCheck", "close")));
+        roleActivities.put(Roles.COMMODITY_EXPERT, new LinkedHashSet<>(Arrays.asList("view", "add", "change")));
     }
 
     @Override
@@ -38,27 +38,29 @@ public class Login implements Action {
             return "error.jsp";
         }
 
-        User user = new UserDao().findUserByRoleAndLoginAndPassword(role, login, password);
-        if (user != null) {
+        User user = new UserDao().findUserByLoginAndPassword(login, password);
+        if (isInputLoginAndRoleValidWithDBUser(login, role, user)) {
             switch (role) {
                 case "SENIOR_CASHIER":
-                    setLoginSessionAttributes(user, session, Roles.SENIOR_CASHIER);
-                    return "seniorCashier.jsp";
+                    session.setAttribute("activities", roleActivities.get(Roles.SENIOR_CASHIER));
+                    break;
                 case "CASHIER":
-                    setLoginSessionAttributes(user, session, Roles.CASHIER);
-                    return "cashier.jsp";
+                    session.setAttribute("activities", roleActivities.get(Roles.CASHIER));
+                    break;
                 case "COMMODITY_EXPERT":
-                    setLoginSessionAttributes(user, session, Roles.COMMODITY_EXPERT);
-                    return "commodityExpert.jsp";
+                    session.setAttribute("activities", roleActivities.get(Roles.COMMODITY_EXPERT));
+                    break;
             }
+
+            session.setAttribute("user", user);
+            session.setAttribute("ROLE", Roles.valueOf(role));
+            return "mainUser.jsp";
         }
         session.setAttribute("error", REGISTRATION_FIELDS_NOT_CORRECT);
         return "error.jsp";
     }
 
-    private void setLoginSessionAttributes(User user, HttpSession session, Roles role) {
-        session.setAttribute("user", user);
-        session.setAttribute("ROLE", role);
-        session.setAttribute(role + "activities", roleActivities.get(role));
+    private boolean isInputLoginAndRoleValidWithDBUser(String login, String role, User user) {
+        return user != null && user.getLogin().equals(login) && user.getRole().name().equals(role);
     }
 }

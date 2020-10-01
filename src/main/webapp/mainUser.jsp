@@ -11,7 +11,7 @@
 	<br>
 	Menu:
 	<br>
-	<c:forEach items="${sessionScope.COMMODITY_EXPERTactivities}" var="activity">
+	<c:forEach items="${sessionScope.activities}" var="activity">
 	    <a href="${activity}">${activity}</a>
         <br>
     </c:forEach>

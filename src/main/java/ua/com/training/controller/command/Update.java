@@ -13,6 +13,7 @@ public class Update implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
+        // todo implement check in jsp every field
         String code = request.getParameter("code");
         String value = request.getParameter("value");
 
@@ -29,7 +30,7 @@ public class Update implements Action {
         boolean update = new ProductDao().updateQuantityProductByCode(code, Integer.parseInt(value));
 
         if (update) {
-            return "commodityExpert.jsp";
+            return "mainUser.jsp";
         } else {
             session.setAttribute("error", "can't update. Check data");
             return "error.jsp";
