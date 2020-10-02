@@ -10,6 +10,7 @@ public class Logout implements Action{
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        // todo implement for Role.Cashier if present order which not closed don't exit must close
         HttpSession session = request.getSession(false);
         if (session != null)
             session.invalidate();

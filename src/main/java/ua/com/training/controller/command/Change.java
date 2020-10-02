@@ -9,7 +9,7 @@ public class Change implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String execute = new View().execute(request, response);
+        // todo add products util and test
         return "commodityExpertChangeProductQuantity.jsp";
     }
 }

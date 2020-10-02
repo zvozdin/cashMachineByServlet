@@ -10,16 +10,16 @@
 <body>
 	Products:
 	<br>
-    <form action="cart" method "post">
-
-            <c:forEach var="product" items="${sessionScope.products}">
+    <form action="" method "post">
+            <c:forEach var="product" items="${sessionScope.order.products}">
                 code #${product.code} ${product.name} Size: ${product.size} Price: ${product.price} Quantity =>
-                <input type="number" min="1" max="${product.quantity}" name="${product.code}" />
+                <input type="number" min="0" name="${product.code}" value="${product.quantity}" />
                 <br>
             </c:forEach>
 
         <br>
-        <input type="submit" value="into cart" />
+        <button type="submit" formaction="open">Change check</button>
+        <button type="submit" formaction="closeCheckCashier">Close check</button>
     </form>
     <br>
 	<a href="mainUser.jsp">main</a> <a href="logout">logout</a>

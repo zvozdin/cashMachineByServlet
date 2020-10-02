@@ -3,6 +3,7 @@ package ua.com.training.controller.command;
 import ua.com.training.dao.UserDao;
 import ua.com.training.dao.entity.Roles;
 import ua.com.training.dao.entity.User;
+import ua.com.training.utility.SessionProductsAttribute;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -54,6 +55,8 @@ public class Login implements Action {
 
             session.setAttribute("user", user);
             session.setAttribute("ROLE", Roles.valueOf(role));
+
+            SessionProductsAttribute.setSessionAttributeProductsActualData(request);
             return "mainUser.jsp";
         }
         session.setAttribute("error", REGISTRATION_FIELDS_NOT_CORRECT);

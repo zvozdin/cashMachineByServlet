@@ -80,6 +80,7 @@ public class ProductDao extends Dao {
     }
 
     private Product mapProductFromResultSet(ResultSet resultSet) throws SQLException {
+        // todo try use builder pattern for creating product instance .build()
         Product product = new Product();
         product.setId(resultSet.getLong("id"));
         product.setCode(resultSet.getString("code"));

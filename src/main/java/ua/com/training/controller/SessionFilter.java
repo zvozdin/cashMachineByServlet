@@ -19,10 +19,12 @@ public class SessionFilter implements Filter {
         // todo implement actions from actions holder
         roleRights.put(Roles.SENIOR_CASHIER, Arrays.asList("/seniorCashier.jsp"));
         // todo implement actions from actions holder
-        roleRights.put(Roles.CASHIER, Arrays.asList("/cashier.jsp"));
+        roleRights.put(Roles.CASHIER, Arrays.asList("" +
+                "/cashier.jsp", "/cashierCart.jsp", "" +
+                "/open", "/cart", "/changeCheckCashier", "/closeCheckCashier"));
         // todo implement actions to map from actions holder and separate user jsp
         roleRights.put(Roles.COMMODITY_EXPERT, Arrays.asList("" +
-                "/commodityExpertAllProducts.jsp", "/commodityExpertChangeProductQuantity.jsp","" +
+                "/commodityExpertAllProducts.jsp", "/commodityExpertChangeProductQuantity.jsp", "" +
                 "/commodityExpertAddProduct.jsp", "" +
                 "/view", "/change", "/add", "/insert", "/update"));
     }
@@ -34,7 +36,6 @@ public class SessionFilter implements Filter {
 
         //todo implement localization
 
-        // todo implement back button on browser
 
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
@@ -51,6 +52,8 @@ public class SessionFilter implements Filter {
         String action = request.getRequestURI().substring(request.getContextPath().length());
         HttpSession session = request.getSession(false);
 
+        // todo implement back button on browser
+        // todo implement check session on existing registered user
         if (action.equals("/login.jsp") || action.equals("/error.jsp")) {
             return true;
         }

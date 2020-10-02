@@ -8,7 +8,7 @@ import java.sql.*;
 public class UserDao {
 
     private static final String FIND_USER_BY_LOGIN_AND_PASSWORD =
-            "SELECT u.login, r.role FROM users u JOIN roles r ON u.role_id=r.id WHERE u.login=? AND u.password=?";
+            "SELECT u.id, u.login, r.role FROM users u JOIN roles r ON u.role_id=r.id WHERE u.login=? AND u.password=?";
 
     public User findUserByLoginAndPassword(String login, String password) {
         User user = new User();
@@ -19,6 +19,7 @@ public class UserDao {
             statement.setString(2, password);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
+                    user.setId(Long.parseLong(resultSet.getString("id")));
                     user.setLogin(resultSet.getString("login"));
                     user.setRole(Roles.valueOf(resultSet.getString("role")));
                 }
