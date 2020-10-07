@@ -20,7 +20,7 @@ public class Login implements Action {
     public Login() {
         roleActivities = new HashMap<>();
         roleActivities.put(Roles.SENIOR_CASHIER, new LinkedHashSet<>(Arrays.asList("cancel_order", "cancel_order_product", "make_Z_report")));
-        roleActivities.put(Roles.CASHIER, new LinkedHashSet<>(Arrays.asList("open", "changeCheck", "close")));
+        roleActivities.put(Roles.CASHIER, new LinkedHashSet<>(Arrays.asList("open", "change", "close")));
         roleActivities.put(Roles.COMMODITY_EXPERT, new LinkedHashSet<>(Arrays.asList("view", "add", "change")));
     }
 
@@ -31,36 +31,50 @@ public class Login implements Action {
         String role = request.getParameter("role");
         HttpSession session = request.getSession();
 
-        if (login == null || login.isEmpty()
-                || password == null || password.isEmpty()
-                || role == null || role.isEmpty()
-        ) {
+        if (isInputDataNotValid(login, password, role)) {
             session.setAttribute("error", REGISTRATION_FIELDS_NOT_CORRECT);
             return "error.jsp";
         }
 
         User user = new UserDao().findUserByLoginAndPassword(login, password);
         if (isInputLoginAndRoleValidWithDBUser(login, role, user)) {
-            switch (role) {
-                case "SENIOR_CASHIER":
-                    session.setAttribute("activities", roleActivities.get(Roles.SENIOR_CASHIER));
-                    break;
-                case "CASHIER":
-                    session.setAttribute("activities", roleActivities.get(Roles.CASHIER));
-                    break;
-                case "COMMODITY_EXPERT":
-                    session.setAttribute("activities", roleActivities.get(Roles.COMMODITY_EXPERT));
-                    break;
-            }
-
-            session.setAttribute("user", user);
-            session.setAttribute("ROLE", Roles.valueOf(role));
-
-            SessionProductsAttribute.setSessionAttributeProductsActualData(request);
+            setRoleAndUserAttributes(request, role, user);
             return "mainUser.jsp";
         }
+
         session.setAttribute("error", REGISTRATION_FIELDS_NOT_CORRECT);
         return "error.jsp";
+    }
+
+    private boolean isInputDataNotValid(String login, String password, String role) {
+        if (login == null || login.isEmpty()
+                || password == null || password.isEmpty()
+                || role == null || role.isEmpty()
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void setRoleAndUserAttributes(HttpServletRequest request, String role, User user) {
+        HttpSession session = request.getSession();
+        switch (role) {
+            case "SENIOR_CASHIER":
+                session.setAttribute("activities", roleActivities.get(Roles.SENIOR_CASHIER));
+                break;
+            case "CASHIER":
+                session.setAttribute("activities", roleActivities.get(Roles.CASHIER));
+                break;
+            case "COMMODITY_EXPERT":
+                session.setAttribute("activities", roleActivities.get(Roles.COMMODITY_EXPERT));
+                break;
+        }
+
+        session.setAttribute("user", user);
+        session.setAttribute("ROLE", Roles.valueOf(role));
+
+        SessionProductsAttribute.setSessionAttributeProductsActualData(request);
     }
 
     private boolean isInputLoginAndRoleValidWithDBUser(String login, String role, User user) {

@@ -1,6 +1,6 @@
 package ua.com.training.controller.command;
 
-import ua.com.training.dao.ProductDao;
+import ua.com.training.dao.StockDao;
 import ua.com.training.dao.entity.Product;
 import ua.com.training.dao.entity.Size;
 
@@ -27,7 +27,7 @@ public class Insert implements Action {
         product.setQuantity(Integer.parseInt(quantity));
         product.setSize(Size.valueOf(size.toUpperCase()));
 
-        boolean addProduct = new ProductDao().addProduct(product);
+        boolean addProduct = new StockDao().save(product);
 
         if (addProduct) {
             return "mainUser.jsp";

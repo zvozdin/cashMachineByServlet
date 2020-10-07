@@ -9,6 +9,6 @@
 <body>
     ${sessionScope.error}
     <br>
-    <a href="/login.jsp">main</a>
+    <a href="/mainUser.jsp">main</a>
 </body>
 </html>

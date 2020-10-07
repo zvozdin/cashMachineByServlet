@@ -1,6 +1,6 @@
 package ua.com.training.controller.command;
 
-import ua.com.training.dao.ProductDao;
+import ua.com.training.dao.StockDao;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,7 +12,7 @@ public class Add implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        Set<String> columns = new ProductDao().getColumns();
+        Set<String> columns = new StockDao().getColumns();
         columns.remove("id");
         request.getSession().setAttribute("columns", columns);
         return "commodityExpertAddProduct.jsp";

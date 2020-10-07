@@ -6,7 +6,7 @@ import ua.com.training.dao.entity.Size;
 import java.sql.*;
 import java.util.*;
 
-public class ProductDao extends Dao {
+public class StockDao extends Dao {
 
     private static final String TABLE_NAME = "stock";
     private static final String FIND_ALL_PRODUCTS = "SELECT * FROM stock";
@@ -38,7 +38,7 @@ public class ProductDao extends Dao {
         return new ArrayList<>();
     }
 
-    public boolean addProduct(Product product) {
+    public boolean save(Product product) {
         try (Connection connection = DatabaseConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_PRODUCT)
         ) {
@@ -63,19 +63,18 @@ public class ProductDao extends Dao {
              PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCT_QUANTITY_BY_CODE)
         ) {
             connection.setAutoCommit(false);
+            // todo impl iso level SERIALIZATION
             statement.setInt(1, quantity);
             statement.setString(2, code);
 
             if (statement.executeUpdate() > 0) {
                 connection.commit();
-                connection.setAutoCommit(true);
                 return true;
             }
-
-            connection.setAutoCommit(true);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return false;
     }
 

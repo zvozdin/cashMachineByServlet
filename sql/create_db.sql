@@ -18,7 +18,7 @@ CREATE TABLE users
     password VARCHAR(20),
     role_id INT NOT NULL,
 	PRIMARY KEY (id),
-    FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE
+    FOREIGN KEY (role_id) REFERENCES roles(id) ON update CASCADE
 );
 
 CREATE TABLE stock
@@ -35,51 +35,48 @@ CREATE TABLE stock
 CREATE TABLE checks
 (
 	id INT AUTO_INCREMENT NOT NULL,
-    code VARCHAR(20) UNIQUE NOT NULL,
-	name_en VARCHAR(20) NOT NULL,
-    quantity INT NOT NULL,
-    price double NOT NULL,
-    is_paid boolean NOT NULL,
-    bill INT NOT NULL,
     user_id INT NOT NULL,
-    product_id INT NOT NULL,
-    dataTime DATETIME DEFAULT NOW(),
+    check_code INT unique NOT NULL,
+	dataTime DATETIME DEFAULT NOW(),
 	PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES users(id),
-    FOREIGN KEY (product_id) REFERENCES stock(id)
+    FOREIGN KEY (user_id) REFERENCES users(id) ON update CASCADE
 ) ENGINE InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE report
+CREATE TABLE orders
 (
 	id INT AUTO_INCREMENT NOT NULL,
-    orders_count INT NOT NULL,
-	common_bill INT NOT NULL,
-	PRIMARY KEY (id)
-);
+    check_id INT NOT NULL,
+    product_id INT NOT NULL,
+    quantity INT NOT NULL,
+    price double NOT NULL,
+    bill double NOT NULL,
+	PRIMARY KEY (id),
+	FOREIGN KEY (check_id) REFERENCES checks(id),
+    FOREIGN KEY (product_id) REFERENCES stock(id) ON update CASCADE
+) ENGINE InnoDB DEFAULT CHARSET=utf8;
 
-insert into roles(role) values ('SENIOR_CASHIER');
-insert into roles(role) values ('CASHIER');
-insert into roles(role) values ('COMMODITY_EXPERT');
+insert into roles
+(role) 
+values 
+('SENIOR_CASHIER'),
+('CASHIER'),
+('COMMODITY_EXPERT');
 
-insert into users(login, password, role_id) 
-values ('admin', 'admin', 1);
-insert into users(login, password, role_id) 
-values ('cashier1', '11111', 2);
-insert into users(login, password, role_id) 
-values ('cashier2', '77777', 2);
-insert into users(login, password, role_id) 
-values ('expert1', '00000', 3);
+insert into users
+(login, password, role_id) 
+values 
+('admin', 'admin', 1),
+('cashier1', '11111', 2),
+('cashier2', '77777', 2),
+('expert1', '00000', 3);
 
-insert into stock(code, name, size, quantity, price) 
-values ('1001', 'jacket', 'L', 20, 50);
-insert into stock(code, name, size, quantity, price) 
-values ('1002', 'jacket', 'M', 30, 50);
-insert into stock(code, name, size, quantity, price) 
-values ('2001', 'shirt', 'S', 15, 20);
-insert into stock(code, name, size, quantity, price) 
-values ('2002', 'shirt', 'L', 20, 20);
+insert into stock
+(code, name, size, quantity, price) 
+values 
+('1001', 'jacket', 'L', 20, 50),
+('1002', 'jacket', 'M', 30, 50),
+('2001', 'shirt', 'S', 15, 20),
+('2002', 'shirt', 'L', 20, 20);
 
-insert into checks(code, name_en,  quantity, price, is_paid,bill,user_id,product_id) 
-values ('1001', 'jacket', 20, 50, false, 500,1,1);
-
-SELECT * FROM final_project_db.checks;
+insert into checks(user_id, check_code) values (3, 1000);
+insert into orders(check_id, product_id, quantity, price, bill) values (1, 1, 1, 1, 1);

@@ -17,24 +17,36 @@ public class Cart implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-
+        Order order = (Order) session.getAttribute("order");
         List<Product> cart = SessionProductsAttribute.getChosenProducts(request);
 
-        if (session.getAttribute("order") == null && cart.size() == 0) {
-            session.setAttribute("error", "check can't be empty");
+        if (isEmptyCartAndOrder(session, cart)) {
             return "error.jsp";
         }
 
-        if (cart.size() > 0) {
-            Order order = new Order();
-            User user = (User) session.getAttribute("user");
-            order.setUserId(user.getId());
-            order.setProducts(cart);
-            session.setAttribute("order", order);
-        } else {
-            // leave current order
-        }
+        User user = (User) session.getAttribute("user");
+        order.setUserId(user.getId());
+        order.setProducts((List<Product>) session.getAttribute("cart"));
+        session.setAttribute("order", order);
 
         return "cashierCart.jsp";
+    }
+
+    private boolean isEmptyCartAndOrder(HttpSession session, List<Product> cart) {
+        if (session.getAttribute("order") == null) {
+            session.setAttribute("error", "order doesn't exist");
+            return true;
+        }
+
+        if (session.getAttribute("cart") == null && cart.size() == 0) {
+            session.setAttribute("error", "check is empty.");
+            return true;
+        }
+
+        if (cart.size() > 0) {
+            session.setAttribute("cart", cart);
+        }
+
+        return false;
     }
 }
