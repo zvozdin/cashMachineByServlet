@@ -1,11 +1,14 @@
 package ua.com.training.dao.entity;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public class Order {
 
     private Long userId;
+    private String login;
     private Integer checkCode;
+    private Timestamp date;
     private List<Product> products;
 
     public Order() {
@@ -33,5 +36,21 @@ public class Order {
 
     public Integer getCheckCode() {
         return checkCode;
+    }
+
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 }

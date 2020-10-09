@@ -51,8 +51,8 @@ CREATE TABLE orders
     price double NOT NULL,
     bill double NOT NULL,
 	PRIMARY KEY (id),
-	FOREIGN KEY (check_id) REFERENCES checks(id),
-    FOREIGN KEY (product_id) REFERENCES stock(id) ON update CASCADE
+	FOREIGN KEY (check_id) REFERENCES checks(id) ON DELETE CASCADE,
+    FOREIGN KEY (product_id) REFERENCES stock(id)
 ) ENGINE InnoDB DEFAULT CHARSET=utf8;
 
 insert into roles
@@ -79,4 +79,33 @@ values
 ('2002', 'shirt', 'L', 20, 20);
 
 insert into checks(user_id, check_code) values (3, 1000);
+insert into checks(user_id, check_code) values (2, 1011);
+insert into checks(user_id, check_code) values (2, 1010);
+insert into checks(user_id, check_code) values (2, 1012);
 insert into orders(check_id, product_id, quantity, price, bill) values (1, 1, 1, 1, 1);
+insert into orders(check_id, product_id, quantity, price, bill) values (1, 2, 100, 1, 1);
+insert into orders(check_id, product_id, quantity, price, bill) values (2, 3, 100, 1, 1);
+insert into orders(check_id, product_id, quantity, price, bill) values (2, 4, 100, 1, 1);
+insert into orders(check_id, product_id, quantity, price, bill) values (3, 1, 100, 1, 1);
+insert into orders(check_id, product_id, quantity, price, bill) values (3, 4, 100, 1, 1);
+
+DROP TRIGGER IF EXISTS delete_profile;
+DELIMITER |
+CREATE TRIGGER delete_profile
+BEFORE DELETE ON orders 
+FOR EACH ROW 
+  BEGIN
+    update stock set quantity = quantity + old.quantity where stock.id = old.product_id;
+ END;
+    |
+    
+DROP TRIGGER IF EXISTS delete_check;
+DELIMITER |
+CREATE TRIGGER delete_check
+BEFORE DELETE ON checks 
+FOR EACH ROW 
+  BEGIN
+    delete from orders  where check_id = old.id;
+ END;
+    |
+    

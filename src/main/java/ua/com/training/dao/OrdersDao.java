@@ -6,7 +6,7 @@ import ua.com.training.dao.entity.User;
 import java.sql.*;
 import java.util.List;
 
-public class CheckDao {
+public class OrdersDao {
 
     private static final String SELECT_MAX_CHECK_CODE = "SELECT MAX(check_code) AS max_check_code FROM checks";
 
@@ -34,7 +34,7 @@ public class CheckDao {
         ) {
             connection.setAutoCommit(false);
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-
+            // todo implement with trigger or procedures in db layer and remove private methods
             if (stockQuantityLessThanClientOrder(products, selectStockProductQuantity)
                     || stockQuantitySubstractionFail(products, subtraction)) {
                 connection.rollback();
@@ -45,6 +45,7 @@ public class CheckDao {
 
             int checkCodeId = getCheckCodeId(user, checkCode, addCheckCode);
 
+            connection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
             if (checkCodeId == -1 || !saveOrder(products, insert, checkCodeId)) {
                 connection.rollback();
                 return -1;

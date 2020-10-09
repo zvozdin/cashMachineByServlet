@@ -1,6 +1,6 @@
 package ua.com.training.controller.command;
 
-import ua.com.training.dao.CheckDao;
+import ua.com.training.dao.OrdersDao;
 import ua.com.training.dao.entity.Order;
 import ua.com.training.dao.entity.Product;
 import ua.com.training.dao.entity.User;
@@ -24,7 +24,7 @@ public class Close implements Action {
             return "error.jsp";
         }
 
-        int checkCode = new CheckDao().save(products, (User) session.getAttribute("user"));
+        int checkCode = new OrdersDao().save(products, (User) session.getAttribute("user"));
 
         if (checkCode > 0) {
             order.setCheckCode(checkCode);
