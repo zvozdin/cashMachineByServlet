@@ -22,6 +22,30 @@ public class OrdersDao {
 
     private static final String SUBTRACTION_QUANTITY = "update stock set quantity = quantity - ? where id = ?";
 
+    private static final String DELETE_PRODUCT_FROM_ORDER = "delete p from orders p " +
+            "inner join checks c on p.check_id = c.id  where p.product_id = ? and c.check_code = ?";
+
+    public boolean deleteProductByCheckCodeAndProductCode(Product product, int checkCode) throws Exception {
+        try (Connection connection = DatabaseConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_PRODUCT_FROM_ORDER)
+        ) {
+            connection.setAutoCommit(false);
+            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+            statement.setInt(1, Math.toIntExact(product.getId()));
+            statement.setInt(2, checkCode);
+            if (statement.executeUpdate() > 0) {
+                connection.commit();
+                return true;
+            }
+            connection.rollback();
+        } catch (SQLException e) {
+            // todo log exception
+            e.printStackTrace();
+
+        }
+
+        return false;
+    }
 
     public int save(List<Product> products, User user) {
 

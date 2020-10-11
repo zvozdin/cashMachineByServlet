@@ -106,8 +106,13 @@ public class ChecksDao extends Dao {
 
 
     public static void main(String[] args) throws Exception {
-        System.out.println(new ChecksDao().findAllChecks().toString());
+//        System.out.println(new ChecksDao().findAllChecks().toString());
 //        System.out.println(new ChecksDao().deleteOrderByCheckCode();
 //        System.out.println(new ChecksDao().findOrderByCheckCode(1000));
+        System.out.println(new OrdersDao()
+                .deleteProductByCheckCodeAndProductCode(
+                        new Product.ProductBuilder()
+                                .id(Long.valueOf(1))
+                                .build(), 1000));
     }
 }
