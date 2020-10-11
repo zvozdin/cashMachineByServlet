@@ -27,7 +27,7 @@ public class Close implements Action {
         int checkCode = new OrdersDao().save(products, (User) session.getAttribute("user"));
 
         if (checkCode > 0) {
-            order.setCheckCode(checkCode);
+            session.setAttribute("checkCode", checkCode);
             return "check.jsp";
         }
 

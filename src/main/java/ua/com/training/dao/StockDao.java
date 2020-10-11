@@ -26,8 +26,15 @@ public class StockDao extends Dao {
         ) {
             try (ResultSet resultSet = statement.executeQuery(FIND_ALL_PRODUCTS)) {
                 while (resultSet.next()) {
-                    Product product = mapProductFromResultSet(resultSet);
-                    products.add(product);
+                    products.add(
+                            new Product.ProductBuilder()
+                                    .id(resultSet.getLong("id"))
+                                    .code(resultSet.getString("code"))
+                                    .name(resultSet.getString("name"))
+                                    .size(Size.valueOf(resultSet.getString("size").toUpperCase()))
+                                    .quantity(resultSet.getInt("quantity"))
+                                    .price(resultSet.getDouble("price"))
+                                    .build());
                 }
                 return products;
             }
@@ -62,13 +69,9 @@ public class StockDao extends Dao {
         try (Connection connection = DatabaseConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_PRODUCT_QUANTITY_BY_CODE)
         ) {
-            connection.setAutoCommit(false);
-            // todo impl iso level SERIALIZATION
             statement.setInt(1, quantity);
             statement.setString(2, code);
-
             if (statement.executeUpdate() > 0) {
-                connection.commit();
                 return true;
             }
         } catch (SQLException e) {
@@ -76,17 +79,5 @@ public class StockDao extends Dao {
         }
 
         return false;
-    }
-
-    private Product mapProductFromResultSet(ResultSet resultSet) throws SQLException {
-        // todo try use builder pattern for creating product instance .build()
-        Product product = new Product();
-        product.setId(resultSet.getLong("id"));
-        product.setCode(resultSet.getString("code"));
-        product.setName(resultSet.getString("name"));
-        product.setSize(Size.valueOf(resultSet.getString("size").toUpperCase()));
-        product.setQuantity(resultSet.getInt("quantity"));
-        product.setPrice(resultSet.getDouble("price"));
-        return product;
     }
 }

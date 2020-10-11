@@ -13,21 +13,21 @@ public class Insert implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        // todo validate entry data on front in input fields without loop but for every one
         String code = request.getParameter("code");
         String name = request.getParameter("name");
         String price = request.getParameter("price");
         String quantity = request.getParameter("quantity");
         String size = request.getParameter("size");
 
-        Product product = new Product();
-        // todo validate entry data on front in input fields without loop but for every one
-        product.setCode(code);
-        product.setName(name);
-        product.setPrice(Double.parseDouble(price));
-        product.setQuantity(Integer.parseInt(quantity));
-        product.setSize(Size.valueOf(size.toUpperCase()));
-
-        boolean addProduct = new StockDao().save(product);
+        boolean addProduct = new StockDao().save(
+                new Product.ProductBuilder()
+                .code(code)
+                .name(name)
+                .size(Size.valueOf(size.toUpperCase()))
+                .price(Double.parseDouble(price))
+                .quantity(Integer.parseInt(quantity))
+                .build());
 
         if (addProduct) {
             return "mainUser.jsp";

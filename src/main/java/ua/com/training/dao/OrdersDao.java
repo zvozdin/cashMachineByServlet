@@ -66,7 +66,7 @@ public class OrdersDao {
             preparedStatement.setLong(2, product.getId());
             preparedStatement.setInt(3, product.getQuantity());
             preparedStatement.setDouble(4, product.getPrice());
-            preparedStatement.setDouble(5, product.getPrice() * product.getQuantity());
+            preparedStatement.setDouble(5, product.getBill());
             preparedStatement.addBatch();
         }
 

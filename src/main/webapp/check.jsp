@@ -11,14 +11,14 @@
     <c:set var = "bill" scope = "request" value = "0"/>
 	Success!
     <br>
-	Your order: #${sessionScope.order.checkCode}
+	Your order: #${sessionScope.checkCode}
     <br>
     ----------------------
     <br>
     <c:forEach var="product" items="${sessionScope.order.products}" varStatus="loop">
         ${loop.count}. #${product.code} ${product.name} ${product.size}
         <br>
-        ${product.quantity} * ${product.price} = ${product.quantity * product.price}
+        ${product.quantity} * ${product.price} = ${product.bill}
         <br>
         <c:set var="bill" value="${bill + product.quantity * product.price}" />
     </c:forEach>
@@ -30,6 +30,7 @@
 	<a href="mainUser.jsp">main</a> <a href="logout">logout</a>
 
 	<c:remove var="bill" scope="request" />
+	<c:remove var="checkCode" scope="session" />
 	<c:remove var="order" scope="session" />
 	<c:remove var="cart" scope="session" />
 </body>

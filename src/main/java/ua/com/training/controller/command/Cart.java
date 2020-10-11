@@ -17,17 +17,17 @@ public class Cart implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-        Order order = (Order) session.getAttribute("order");
         List<Product> cart = SessionProductsAttribute.getChosenProducts(request);
 
         if (isEmptyCartAndOrder(session, cart)) {
             return "error.jsp";
         }
 
-        User user = (User) session.getAttribute("user");
-        order.setUserId(user.getId());
-        order.setProducts((List<Product>) session.getAttribute("cart"));
-        session.setAttribute("order", order);
+        session.setAttribute("order",
+                new Order.OrderBuilder()
+                .userId(((User) session.getAttribute("user")).getId())
+                .products((List<Product>) session.getAttribute("cart"))
+                .build());
 
         return "cashierCart.jsp";
     }

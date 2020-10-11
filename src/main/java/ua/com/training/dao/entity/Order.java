@@ -11,27 +11,20 @@ public class Order {
     private Timestamp date;
     private List<Product> products;
 
-    public Order() {
+    private Order(OrderBuilder orderBuilder) {
+        this.userId = orderBuilder.userId;
+        this.login = orderBuilder.login;
+        this.checkCode = orderBuilder.checkCode;
+        this.date = orderBuilder.date;
+        this.products = orderBuilder.products;
     }
 
     public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-
     public List<Product> getProducts() {
         return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public void setCheckCode(int checkCode) {
-        this.checkCode = checkCode;
     }
 
     public Integer getCheckCode() {
@@ -42,15 +35,49 @@ public class Order {
         return date;
     }
 
-    public void setDate(Timestamp date) {
-        this.date = date;
-    }
-
     public String getLogin() {
         return login;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public static class OrderBuilder {
+
+        private Long userId;
+        private String login;
+        private Integer checkCode;
+        private Timestamp date;
+        private List<Product> products;
+
+        public OrderBuilder() {
+        }
+
+        public OrderBuilder userId(Long userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public OrderBuilder login(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public OrderBuilder checkCode(Integer checkCode) {
+            this.checkCode = checkCode;
+            return this;
+        }
+
+        public OrderBuilder date(Timestamp date) {
+            this.date = date;
+            return this;
+        }
+
+        public OrderBuilder products(List<Product> products) {
+            this.products = products;
+            return this;
+        }
+
+        public Order build() {
+            Order order = new Order(this);
+            return order;
+        }
     }
 }

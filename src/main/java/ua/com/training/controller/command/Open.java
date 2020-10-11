@@ -17,8 +17,7 @@ public class Open implements Action {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
         if (order == null) {
-            order = new Order();
-            session.setAttribute("order", order);
+            session.setAttribute("order", new Order.OrderBuilder().build());
         }
 
         return "cashier.jsp";

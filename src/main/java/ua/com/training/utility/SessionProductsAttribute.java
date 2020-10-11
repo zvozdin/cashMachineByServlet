@@ -18,7 +18,7 @@ public final class SessionProductsAttribute {
         request.getSession().setAttribute("products", products);
     }
 
-    public static List<Product> getChosenProducts (HttpServletRequest request){
+    public static List<Product> getChosenProducts(HttpServletRequest request) {
         List<Product> products = (List<Product>) request.getSession().getAttribute("products");
         List<Product> result = new LinkedList<>();
         for (Product product : products) {
@@ -26,8 +26,16 @@ public final class SessionProductsAttribute {
             if (!(parameter == null
                     || parameter.isEmpty()
                     || Integer.parseInt(parameter) == 0)) {
-                product.setQuantity(Integer.parseInt(parameter));
-                result.add(product);
+
+                result.add(
+                        new Product.ProductBuilder()
+                                .code(product.getCode())
+                                .name(product.getName())
+                                .size(product.getSize())
+                                .quantity(Integer.parseInt(parameter))
+                                .price(product.getPrice())
+                                .bill(Integer.parseInt(parameter) * product.getPrice())
+                                .build());
             }
         }
 
