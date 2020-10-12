@@ -22,8 +22,6 @@ public class OrdersDao {
             "insert into orders(check_id, product_id, quantity, price, bill) " +
             "values (?, ?, ?, ?, ?)";
 
-    private static final String SUBTRACTION_QUANTITY = "update stock set quantity = quantity - ? where id = ?";
-
     private static final String DELETE_PRODUCT_FROM_ORDER = "delete p from orders p " +
             "inner join checks c on p.check_id = c.id  where p.product_id = ? and c.check_code = ?";
 

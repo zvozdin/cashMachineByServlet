@@ -1,5 +1,6 @@
-package ua.com.training.controller.command;
+package ua.com.training.controller.command.common;
 
+import ua.com.training.controller.command.Action;
 import ua.com.training.dao.UserDao;
 import ua.com.training.dao.entity.Roles;
 import ua.com.training.dao.entity.User;
@@ -19,7 +20,7 @@ public class Login implements Action {
 
     public Login() {
         roleActivities = new HashMap<>();
-        roleActivities.put(Roles.SENIOR_CASHIER, new LinkedHashSet<>(Arrays.asList("cancel_order", "cancel_order_product", "make_Z_report")));
+        roleActivities.put(Roles.SENIOR_CASHIER, new LinkedHashSet<>(Arrays.asList("cancel order", "cancel product", "make X report")));
         roleActivities.put(Roles.CASHIER, new LinkedHashSet<>(Arrays.asList("open", "change", "close")));
         roleActivities.put(Roles.COMMODITY_EXPERT, new LinkedHashSet<>(Arrays.asList("view", "add", "change")));
     }

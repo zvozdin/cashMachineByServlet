@@ -1,5 +1,6 @@
-package ua.com.training.controller.command;
+package ua.com.training.controller.command.common;
 
+import ua.com.training.controller.command.Action;
 import ua.com.training.dao.entity.Roles;
 
 import javax.servlet.ServletException;

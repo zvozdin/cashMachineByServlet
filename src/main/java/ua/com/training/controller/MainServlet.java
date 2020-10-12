@@ -1,6 +1,11 @@
 package ua.com.training.controller;
 
 import ua.com.training.controller.command.*;
+import ua.com.training.controller.command.cashier.CashierActionsHolder;
+import ua.com.training.controller.command.common.Login;
+import ua.com.training.controller.command.common.Logout;
+import ua.com.training.controller.command.expert.CommodityExpertActionsHolder;
+import ua.com.training.controller.command.senior.SeniorCashierActionsHolder;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,11 +26,7 @@ public class MainServlet extends HttpServlet {
         actions.put("/logout", new Logout());
         actions.putAll(CommodityExpertActionsHolder.getMap());
         actions.putAll(CashierActionsHolder.getMap());
-    }
-
-    @Override
-    public void init() throws ServletException {
-        super.init();
+        actions.putAll(SeniorCashierActionsHolder.getMap());
     }
 
     @Override
@@ -36,10 +37,5 @@ public class MainServlet extends HttpServlet {
         String page = action.execute(request, response);
 
         response.sendRedirect(page);
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
     }
 }

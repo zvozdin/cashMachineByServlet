@@ -1,5 +1,6 @@
-package ua.com.training.controller.command;
+package ua.com.training.controller.command.cashier;
 
+import ua.com.training.controller.command.Action;
 import ua.com.training.dao.entity.Order;
 import ua.com.training.dao.entity.Product;
 import ua.com.training.dao.entity.User;

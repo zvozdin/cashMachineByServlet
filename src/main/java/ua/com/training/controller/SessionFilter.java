@@ -17,11 +17,14 @@ public class SessionFilter implements Filter {
     public void init(FilterConfig fc) throws ServletException {
         roleRights = new HashMap<>();
         // todo implement actions from actions holder
-        roleRights.put(Roles.SENIOR_CASHIER, Arrays.asList("/seniorCashier.jsp"));
+        roleRights.put(Roles.SENIOR_CASHIER, Arrays.asList("" +
+                "/seniorCashier.jsp", "/seniorDeleteCheck.jsp", "/seniorDeleteCheck.jsp", "/seniorDeleteProduct.jsp",
+                "/report.jsp",
+                "/cancel%20order", "/deleteOrder"));
         // todo implement actions from actions holder
         roleRights.put(Roles.CASHIER, Arrays.asList("" +
                 "/cashier.jsp", "/cashierCart.jsp", "/check.jsp", "" +
-                "/open", "/cart", "/close","/closeCheck",  "/change"));
+                "/open", "/cart", "/close","/closeCheck", "/change"));
         // todo implement actions to map from actions holder and separate user jsp
         roleRights.put(Roles.COMMODITY_EXPERT, Arrays.asList("" +
                 "/commodityExpertAllProducts.jsp", "/commodityExpertChangeProductQuantity.jsp", "" +

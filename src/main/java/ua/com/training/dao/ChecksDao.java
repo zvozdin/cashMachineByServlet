@@ -49,7 +49,7 @@ public class ChecksDao extends Dao {
     }
 
 
-    public boolean deleteOrderByCheckCode(int checkCode) throws Exception {
+    public boolean deleteOrderByCheckCode(int checkCode) {
         try (Connection connection = DatabaseConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_CHECK_BY_CHECK_CODE)
         ) {
@@ -70,7 +70,7 @@ public class ChecksDao extends Dao {
         return false;
     }
 
-    public Optional<Order> findOrderByCheckCode(int checkCode) throws Exception {
+    public Optional<Order> findOrderByCheckCode(int checkCode) {
         try (Connection connection = DatabaseConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ORDER_BY_CHECK_CODE)
         ) {
@@ -102,19 +102,5 @@ public class ChecksDao extends Dao {
         }
 
         return Optional.empty();
-    }
-
-
-    public static void main(String[] args) throws Exception {
-//        System.out.println(new ChecksDao().findAllChecks().toString());
-//        System.out.println(new ChecksDao().deleteOrderByCheckCode();
-//        System.out.println(new ChecksDao().findOrderByCheckCode(1000));
-//        System.out.println(new OrdersDao()
-//                .deleteProductByCheckCodeAndProductCode(
-//                        new Product.ProductBuilder()
-//                                .id(Long.valueOf(1))
-//                                .build(), 1000));
-        System.out.println(new OrdersDao().findOrdersBillAndProductQuantitySum());
-
     }
 }

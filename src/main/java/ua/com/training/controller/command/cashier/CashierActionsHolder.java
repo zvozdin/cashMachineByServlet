@@ -1,4 +1,7 @@
-package ua.com.training.controller.command;
+package ua.com.training.controller.command.cashier;
+
+import ua.com.training.controller.command.*;
+import ua.com.training.controller.command.common.Change;
 
 import java.util.HashMap;
 import java.util.Map;

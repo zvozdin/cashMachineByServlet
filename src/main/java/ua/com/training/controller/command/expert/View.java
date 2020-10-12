@@ -1,4 +1,6 @@
-package ua.com.training.controller.command;
+package ua.com.training.controller.command.expert;
+
+import ua.com.training.controller.command.Action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
