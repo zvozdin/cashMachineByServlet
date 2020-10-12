@@ -39,7 +39,7 @@ CREATE TABLE checks
     check_code INT unique NOT NULL,
 	dataTime DATETIME DEFAULT NOW(),
 	PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES users(id) ON update CASCADE
+    FOREIGN KEY (user_id) REFERENCES users(id)
 ) ENGINE InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE orders
@@ -82,24 +82,36 @@ insert into checks(user_id, check_code) values (3, 1000);
 insert into checks(user_id, check_code) values (2, 1011);
 insert into checks(user_id, check_code) values (2, 1010);
 insert into checks(user_id, check_code) values (2, 1012);
+insert into checks(user_id, check_code) values (3, 1013);
+insert into checks(user_id, check_code) values (3, 1014);
+insert into checks(user_id, check_code) values (3, 1015);
 insert into orders(check_id, product_id, quantity, price, bill) values (1, 1, 1, 1, 1);
 insert into orders(check_id, product_id, quantity, price, bill) values (1, 2, 100, 1, 1);
 insert into orders(check_id, product_id, quantity, price, bill) values (2, 3, 100, 1, 1);
 insert into orders(check_id, product_id, quantity, price, bill) values (2, 4, 100, 1, 1);
 insert into orders(check_id, product_id, quantity, price, bill) values (3, 1, 100, 1, 1);
 insert into orders(check_id, product_id, quantity, price, bill) values (3, 4, 100, 1, 1);
+insert into orders(check_id, product_id, quantity, price, bill) values (4, 4, 100, 1, 1);
+insert into orders(check_id, product_id, quantity, price, bill) values (4, 1, 100, 1, 1);
+insert into orders(check_id, product_id, quantity, price, bill) values (6, 4, 100, 1, 1);
+insert into orders(check_id, product_id, quantity, price, bill) values (6, 4, 100, 1, 1);
+insert into orders(check_id, product_id, quantity, price, bill) values (7, 4, 100, 1, 1);
 
-DROP TRIGGER IF EXISTS delete_profile;
+insert into orders(check_id, product_id, quantity, price, bill) values (1, 1, 300, 1, 1);
+
+DELIMITER | 
+DROP TRIGGER IF EXISTS delete_product;|
 DELIMITER |
-CREATE TRIGGER delete_profile
-BEFORE DELETE ON orders 
+CREATE TRIGGER delete_product
+after DELETE ON orders 
 FOR EACH ROW 
   BEGIN
     update stock set quantity = quantity + old.quantity where stock.id = old.product_id;
  END;
     |
     
-DROP TRIGGER IF EXISTS delete_check;
+DELIMITER | 
+DROP TRIGGER IF EXISTS delete_check;|
 DELIMITER |
 CREATE TRIGGER delete_check
 BEFORE DELETE ON checks 
@@ -109,3 +121,13 @@ FOR EACH ROW
  END;
     |
     
+DELIMITER | 
+DROP TRIGGER IF EXISTS insert_orders;|
+DELIMITER |
+CREATE TRIGGER insert_orders
+after insert ON orders 
+FOR EACH ROW 
+  BEGIN
+    update stock set quantity = quantity - new.quantity where stock.id = new.product_id;
+ END;
+    |

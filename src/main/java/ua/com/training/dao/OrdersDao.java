@@ -1,10 +1,12 @@
 package ua.com.training.dao;
 
 import ua.com.training.dao.entity.Product;
+import ua.com.training.dao.entity.Report;
 import ua.com.training.dao.entity.User;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Optional;
 
 public class OrdersDao {
 
@@ -24,6 +26,46 @@ public class OrdersDao {
 
     private static final String DELETE_PRODUCT_FROM_ORDER = "delete p from orders p " +
             "inner join checks c on p.check_id = c.id  where p.product_id = ? and c.check_code = ?";
+
+    private static final String SELECT_CHECKS_COUNT = "" +
+            "select count(check_code) as count from checks where DATE(dataTime) = CURDATE()";
+
+    private static final String SELECT_QUANTITY_AND_BILL_COUNT = "" +
+            "select sum(orders.quantity) as quantity, sum(orders.bill) as bill from orders " +
+            "inner join checks on orders.check_id = checks.id where DATE(checks.dataTime) = CURDATE()";
+
+    public Optional<Report> findOrdersBillAndProductQuantitySum() {
+        try (Connection connection = DatabaseConnectionPool.getConnection();
+             Statement checksCount = connection.createStatement();
+             Statement quantityAndBillCount = connection.createStatement()
+        ) {
+            int count = 0;
+            int quantity = 0;
+            double bill = 0;
+            try (ResultSet resultSet = checksCount.executeQuery(SELECT_CHECKS_COUNT)) {
+                if (resultSet.next()) {
+                    count = resultSet.getInt("count");
+                }
+            }
+            try (ResultSet resultSet = quantityAndBillCount.executeQuery(SELECT_QUANTITY_AND_BILL_COUNT)) {
+                if (resultSet.next()) {
+                    quantity = resultSet.getInt("quantity");
+                    bill = resultSet.getDouble("bill");
+                }
+            }
+
+            return Optional.ofNullable(new Report.ReportBuilder()
+                    .checksCount(count)
+                    .quantity(quantity)
+                    .bill(bill)
+                    .build());
+        } catch (SQLException e) {
+            // todo log exception
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
+    }
 
     public boolean deleteProductByCheckCodeAndProductCode(Product product, int checkCode) throws Exception {
         try (Connection connection = DatabaseConnectionPool.getConnection();
@@ -51,17 +93,13 @@ public class OrdersDao {
 
         try (Connection connection = DatabaseConnectionPool.getConnection();
              PreparedStatement selectStockProductQuantity = connection.prepareStatement(FIND_PRODUCTS_QUANTITY);
-             PreparedStatement subtraction = connection.prepareStatement(SUBTRACTION_QUANTITY);
              Statement selectMaxCheckCodeInChecks = connection.createStatement();
              PreparedStatement addCheckCode = connection.prepareStatement(ADD_CHECK_BY_USER, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement insert = connection.prepareStatement(INSERT_ORDER)
         ) {
             connection.setAutoCommit(false);
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-            // todo implement with trigger or procedures in db layer and remove private methods
-            if (stockQuantityLessThanClientOrder(products, selectStockProductQuantity)
-                    || stockQuantitySubstractionFail(products, subtraction)) {
-                connection.rollback();
+            if (stockQuantityLessThanClientOrder(products, selectStockProductQuantity)) {
                 return -1;
             }
 
@@ -80,8 +118,8 @@ public class OrdersDao {
         } catch (SQLException e) {
             // todo log and error for client
             e.printStackTrace();
-            return -1;
         }
+        return -1;
     }
 
     private boolean saveOrder(List<Product> products, PreparedStatement preparedStatement, int checkCodeId) throws SQLException {
@@ -133,23 +171,6 @@ public class OrdersDao {
         }
 
         return checkCode;
-    }
-
-    private boolean stockQuantitySubstractionFail(List<Product> products, PreparedStatement preparedStatement) throws SQLException {
-        for (Product product : products) {
-            preparedStatement.setInt(1, product.getQuantity());
-            preparedStatement.setDouble(2, product.getId());
-            preparedStatement.addBatch();
-        }
-
-        int[] ints = preparedStatement.executeBatch();
-        for (int i : ints) {
-            if (i != 1) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private boolean stockQuantityLessThanClientOrder(List<Product> products, PreparedStatement preparedStatement) throws SQLException {

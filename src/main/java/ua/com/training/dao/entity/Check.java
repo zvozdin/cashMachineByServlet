@@ -41,11 +41,4 @@ public class Check {
     public void setOrders(List<Order> orders) {
         this.orders = orders;
     }
-
-    @Override
-    public String toString() {
-        return "check_code #" + check_code +
-                " user " + user  +
-                " date " + date;
-    }
 }

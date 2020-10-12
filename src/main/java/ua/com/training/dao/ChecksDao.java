@@ -101,7 +101,7 @@ public class ChecksDao extends Dao {
             e.printStackTrace();
         }
 
-        return Optional.ofNullable(null);
+        return Optional.empty();
     }
 
 
@@ -109,10 +109,12 @@ public class ChecksDao extends Dao {
 //        System.out.println(new ChecksDao().findAllChecks().toString());
 //        System.out.println(new ChecksDao().deleteOrderByCheckCode();
 //        System.out.println(new ChecksDao().findOrderByCheckCode(1000));
-        System.out.println(new OrdersDao()
-                .deleteProductByCheckCodeAndProductCode(
-                        new Product.ProductBuilder()
-                                .id(Long.valueOf(1))
-                                .build(), 1000));
+//        System.out.println(new OrdersDao()
+//                .deleteProductByCheckCodeAndProductCode(
+//                        new Product.ProductBuilder()
+//                                .id(Long.valueOf(1))
+//                                .build(), 1000));
+        System.out.println(new OrdersDao().findOrdersBillAndProductQuantitySum());
+
     }
 }
