@@ -24,9 +24,9 @@ public class MainServlet extends HttpServlet {
         actions = new HashMap<>();
         actions.put("/login", new Login());
         actions.put("/logout", new Logout());
-        actions.putAll(CommodityExpertActionsHolder.getMap());
-        actions.putAll(CashierActionsHolder.getMap());
         actions.putAll(SeniorCashierActionsHolder.getMap());
+        actions.putAll(CashierActionsHolder.getMap());
+        actions.putAll(CommodityExpertActionsHolder.getMap());
     }
 
     @Override

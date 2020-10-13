@@ -15,7 +15,7 @@ public class CashierActionsHolder {
         actions = new HashMap<>();
         actions.put("/open", new Open());
         actions.put("/cart", new Cart());
-        actions.put("/change", new Change());
+        actions.put("/changeCashier", new Change());
         actions.put("/closeCheck", new Close());
         actions.put("/close", new Cart());
     }

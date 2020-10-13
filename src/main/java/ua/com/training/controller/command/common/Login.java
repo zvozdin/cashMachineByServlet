@@ -20,9 +20,9 @@ public class Login implements Action {
 
     public Login() {
         roleActivities = new HashMap<>();
-        roleActivities.put(Roles.SENIOR_CASHIER, new LinkedHashSet<>(Arrays.asList("cancel order", "cancel product", "make X report")));
-        roleActivities.put(Roles.CASHIER, new LinkedHashSet<>(Arrays.asList("open", "change", "close")));
-        roleActivities.put(Roles.COMMODITY_EXPERT, new LinkedHashSet<>(Arrays.asList("view", "add", "change")));
+        roleActivities.put(Roles.SENIOR_CASHIER, new LinkedHashSet<>(Arrays.asList("cancelOrder", "cancelProduct", "makeXReport")));
+        roleActivities.put(Roles.CASHIER, new LinkedHashSet<>(Arrays.asList("open", "changeCashier", "close")));
+        roleActivities.put(Roles.COMMODITY_EXPERT, new LinkedHashSet<>(Arrays.asList("view", "add", "changeExpert")));
     }
 
     @Override

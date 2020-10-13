@@ -20,16 +20,16 @@ public class SessionFilter implements Filter {
         roleRights.put(Roles.SENIOR_CASHIER, Arrays.asList("" +
                 "/seniorCashier.jsp", "/seniorDeleteCheck.jsp", "/seniorDeleteCheck.jsp", "/seniorDeleteProduct.jsp", "" +
                 "/seniorChooseCheckForDeleteProduct.jsp", "/xReport.jsp", "" +
-                "/cancel%20order", "/cancel%20product", "/deleteOrder", "/deleteProduct", "/make%20X%20report"));
+                "/cancelOrder", "/cancelProduct", "/deleteOrder", "/deleteProduct", "/makeXReport"));
         // todo implement actions from actions holder
         roleRights.put(Roles.CASHIER, Arrays.asList("" +
                 "/cashier.jsp", "/cashierCart.jsp", "/check.jsp", "" +
-                "/open", "/cart", "/close", "/closeCheck", "/change"));
+                "/open", "/cart", "/close", "/closeCheck", "/changeCashier"));
         // todo implement actions to map from actions holder and separate user jsp
         roleRights.put(Roles.COMMODITY_EXPERT, Arrays.asList("" +
                 "/commodityExpertAllProducts.jsp", "/commodityExpertChangeProductQuantity.jsp", "" +
                 "/commodityExpertAddProduct.jsp", "" +
-                "/view", "/change", "/add", "/insert", "/update"));
+                "/view", "/changeExpert", "/add", "/insert", "/update"));
     }
 
     @Override

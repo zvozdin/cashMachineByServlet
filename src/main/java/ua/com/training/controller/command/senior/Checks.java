@@ -18,9 +18,9 @@ public class Checks implements Action {
         HttpSession session = request.getSession();
         String action = request.getRequestURI().substring(request.getContextPath().length());
         switch (action) {
-            case "/cancel%20order":
+            case "/cancelOrder":
                 return getOrderRequest(session, new ChecksDao().findAllChecks());
-            case "/cancel%20product":
+            case "/cancelProduct":
                 return getProductRequest(session, new ChecksDao().findAllChecksWithProducts());
             default:
                 return "report.jsp";

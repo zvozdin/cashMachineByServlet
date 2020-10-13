@@ -12,11 +12,11 @@ public class SeniorCashierActionsHolder {
 
     static {
         actions = new HashMap<>();
-        actions.put("/cancel%20order", new Checks());
+        actions.put("/cancelOrder", new Checks());
         actions.put("/deleteOrder", new DeleteOrder());
-        actions.put("/cancel%20product", new Checks());
+        actions.put("/cancelProduct", new Checks());
         actions.put("/deleteProduct", new DeleteProduct());
-        actions.put("/make%20X%20report", new XReport());
+        actions.put("/makeXReport", new XReport());
     }
 
     public static Set<String> getActions() {

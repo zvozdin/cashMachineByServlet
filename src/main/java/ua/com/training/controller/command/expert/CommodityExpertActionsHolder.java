@@ -13,7 +13,7 @@ public class CommodityExpertActionsHolder {
         actions = new HashMap<>();
         actions.put("/view", new View());
         actions.put("/add", new Add());
-        actions.put("/change", new Change());
+        actions.put("/changeExpert", new Change());
         actions.put("/update", new Update());
         actions.put("/insert", new Insert());
     }
