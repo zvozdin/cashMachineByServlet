@@ -13,14 +13,9 @@
     <link rel="icon" href="data:,">
 </head>
 <body>
-    <form>
-        <select id="language" name="language" onchange="submit()">
-            <option value="en" ${sessionScope.language == 'en' ? 'selected' : ''}>English</option>
-            <option value="ua" ${sessionScope.language == 'ua' ? 'selected' : ''}>Українська</option>
-        </select>
-    </form>
+    <a href="?language=en">English</a> |
+    <a href="?language=ua">Українська</a>
     <hr/>
-
     <fmt:message key = "label.welcome" />
 	<form action="login" method="post">
 	    <c:forEach items="${roles}" var="role">
