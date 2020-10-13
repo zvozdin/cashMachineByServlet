@@ -37,9 +37,6 @@ public class SessionFilter implements Filter {
         req.setCharacterEncoding("utf-8");
         res.setCharacterEncoding("utf-8");
 
-        //todo implement localization
-
-
         HttpServletRequest request = (HttpServletRequest) req;
         HttpServletResponse response = (HttpServletResponse) res;
         request.setAttribute("roles", EnumSet.allOf(Roles.class));
