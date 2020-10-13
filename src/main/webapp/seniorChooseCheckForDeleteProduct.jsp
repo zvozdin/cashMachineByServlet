@@ -9,19 +9,24 @@
     <link rel="icon" href="data:,">
 </head>
 <body>
-    Choose check to delete
+    Choose product to delete
     <hr/>
-	<form action="deleteOrder" method="post">
+	<form action="deleteProduct" method="post">
 	    <c:forEach items="${checks}" var="check">
-            <input type="radio" name="check_code" value="${check.checkCode}" required />
             check #${check.checkCode}
             <br>
             <fmt:formatDate type = "date" value = "${check.date}" />
-            #${check.login}
-            <hr/>
+            <br>
+            <c:forEach var="product" items="${check.order.products}" varStatus="loop">
+                <input type="radio" name="productIdAndCheckCode" value="${product.id}|${check.checkCode}" required />
+                ${loop.count}. #${product.code} ${product.name} ${product.size}
+                ${product.quantity} * ${product.price} = ${product.bill}
+                <br>
+            </c:forEach>
+	        <hr/>
         </c:forEach>
         <br>
-        <input type="submit" value="delete order" />
+        <input type="submit" value="delete product" />
     </form>
     <br>
 	<a href="mainUser.jsp">main</a> <a href="logout">logout</a>

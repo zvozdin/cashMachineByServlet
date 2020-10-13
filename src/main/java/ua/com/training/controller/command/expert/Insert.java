@@ -14,27 +14,21 @@ public class Insert implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        // todo validate entry data on front in input fields without loop but for every one
-        String code = request.getParameter("code");
-        String name = request.getParameter("name");
-        String price = request.getParameter("price");
-        String quantity = request.getParameter("quantity");
-        String size = request.getParameter("size");
-
         boolean addProduct = new StockDao().save(
                 new Product.ProductBuilder()
-                .code(code)
-                .name(name)
-                .size(Size.valueOf(size.toUpperCase()))
-                .price(Double.parseDouble(price))
-                .quantity(Integer.parseInt(quantity))
-                .build());
+                        .code(request.getParameter("code"))
+                        .name(request.getParameter("name"))
+                        .size(Size.valueOf(request.getParameter("size")))
+                        .price(Double.parseDouble(request.getParameter("price")))
+                        .quantity(Integer.parseInt(request.getParameter("quantity")))
+                        .build());
 
         if (addProduct) {
-            return "mainUser.jsp";
+            request.getSession().setAttribute("report", "Success");
         } else {
-            request.getSession().setAttribute("error", "product can't be added");
-            return "error.jsp";
+            request.getSession().setAttribute("report", "product can't be added. Probably already exists");
         }
+
+        return "report.jsp";
     }
 }

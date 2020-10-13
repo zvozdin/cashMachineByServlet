@@ -4,19 +4,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Commodity Expert</title>
+<title>${sessionScope.ROLE}</title>
 <link rel="icon" href="data:,">
 </head>
 <body>
 	Welcome ${sessionScope.user.login}
-	<br>
+	<hr/>
 	Menu:
+	<br>
 	<br>
 	<c:forEach items="${sessionScope.activities}" var="activity">
 	    <a href="${activity}">${activity}</a>
         <br>
     </c:forEach>
-
     <br>
 	<a href="logout">logout</a>
 </body>

@@ -13,7 +13,6 @@ public final class SessionProductsAttribute {
     }
 
     public static void setSessionAttributeProductsActualData(HttpServletRequest request) {
-        // todo implement with ProductService
         List<Product> products = new StockDao().findAllProducts();
         request.getSession().setAttribute("products", products);
     }
@@ -29,6 +28,7 @@ public final class SessionProductsAttribute {
 
                 result.add(
                         new Product.ProductBuilder()
+                                .id(product.getId())
                                 .code(product.getCode())
                                 .name(product.getName())
                                 .size(product.getSize())

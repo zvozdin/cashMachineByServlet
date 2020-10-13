@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Commodity Expert</title>
+<title>${sessionScope.ROLE}</title>
 <link rel="icon" href="data:,">
 </head>
 <body>
@@ -12,11 +12,11 @@
         <select name="code">
             <c:forEach var="product" items="${sessionScope.products}">
                 <option value="${product.code}">
-                    ${product.name} ${product.size}
+                    ${product.code} ${product.name} ${product.size}
                 </option>
             </c:forEach>
         </select>
-        = <input type="number" min="0" name="value" />
+        = <input type="number" min="0" name="value" required/>
         <br>
         <br>
         <input type="submit" value="change" />

@@ -21,7 +21,7 @@ public class Cart implements Action {
         List<Product> cart = SessionProductsAttribute.getChosenProducts(request);
 
         if (isEmptyCartAndOrder(session, cart)) {
-            return "error.jsp";
+            return "report.jsp";
         }
 
         session.setAttribute("order",
@@ -35,12 +35,12 @@ public class Cart implements Action {
 
     private boolean isEmptyCartAndOrder(HttpSession session, List<Product> cart) {
         if (session.getAttribute("order") == null) {
-            session.setAttribute("error", "order doesn't exist");
+            session.setAttribute("report", "order doesn't exist");
             return true;
         }
 
         if (session.getAttribute("cart") == null && cart.size() == 0) {
-            session.setAttribute("error", "check is empty.");
+            session.setAttribute("report", "check is empty.");
             return true;
         }
 

@@ -37,18 +37,22 @@ public class OrdersDao {
              Statement checksCount = connection.createStatement();
              Statement quantityAndBillCount = connection.createStatement()
         ) {
-            int count = 0;
-            int quantity = 0;
-            double bill = 0;
+            int count;
+            int quantity;
+            double bill;
             try (ResultSet resultSet = checksCount.executeQuery(SELECT_CHECKS_COUNT)) {
                 if (resultSet.next()) {
                     count = resultSet.getInt("count");
+                } else {
+                    return Optional.empty();
                 }
             }
             try (ResultSet resultSet = quantityAndBillCount.executeQuery(SELECT_QUANTITY_AND_BILL_COUNT)) {
                 if (resultSet.next()) {
                     quantity = resultSet.getInt("quantity");
                     bill = resultSet.getDouble("bill");
+                } else {
+                    return Optional.empty();
                 }
             }
 
@@ -65,13 +69,13 @@ public class OrdersDao {
         return Optional.empty();
     }
 
-    public boolean deleteProductByCheckCodeAndProductCode(Product product, int checkCode) throws Exception {
+    public boolean deleteProductByCheckCodeAndProductId(int checkCode, int productId) {
         try (Connection connection = DatabaseConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_PRODUCT_FROM_ORDER)
         ) {
             connection.setAutoCommit(false);
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-            statement.setInt(1, Math.toIntExact(product.getId()));
+            statement.setInt(1, productId);
             statement.setInt(2, checkCode);
             if (statement.executeUpdate() > 0) {
                 connection.commit();

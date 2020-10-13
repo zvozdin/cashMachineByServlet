@@ -3,12 +3,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Error</title>
+<title>Report</title>
 <link rel="icon" href="data:,">
 </head>
 <body>
-    ${sessionScope.error}
-    <br>
+    ${sessionScope.report}
+    <hr/>
     <a href="/mainUser.jsp">main</a>
 </body>
 </html>

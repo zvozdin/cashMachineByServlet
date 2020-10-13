@@ -16,14 +16,39 @@ public class Checks implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-
-        List<Check> checks = new ChecksDao().findAllChecks();
-        if (checks.isEmpty()) {
-            session.setAttribute("error", "there is no checks today");
-            return "error.jsp";
+        String action = request.getRequestURI().substring(request.getContextPath().length());
+        switch (action) {
+            case "/cancel%20order":
+                return getOrderRequest(session, new ChecksDao().findAllChecks());
+            case "/cancel%20product":
+                return getProductRequest(session, new ChecksDao().findAllChecksWithProducts());
+            default:
+                return "report.jsp";
         }
+    }
+
+    private String getProductRequest(HttpSession session, List<Check> checks) {
+        if (isEmpty(session, checks))
+            return "report.jsp";
 
         session.setAttribute("checks", checks);
-        return "seniorDeleteCheck.jsp";
+        return "seniorChooseCheckForDeleteProduct.jsp";
+    }
+
+    private String getOrderRequest(HttpSession session, List<Check> checks) {
+        if (isEmpty(session, checks)) {
+            return "report.jsp";
+        } else {
+            session.setAttribute("checks", checks);
+            return "seniorDeleteCheck.jsp";
+        }
+    }
+
+    private boolean isEmpty(HttpSession session, List<Check> checks) {
+        if (checks.isEmpty()) {
+            session.setAttribute("report", "there is no checks today");
+            return true;
+        }
+        return false;
     }
 }

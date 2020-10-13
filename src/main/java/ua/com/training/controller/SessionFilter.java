@@ -18,13 +18,13 @@ public class SessionFilter implements Filter {
         roleRights = new HashMap<>();
         // todo implement actions from actions holder
         roleRights.put(Roles.SENIOR_CASHIER, Arrays.asList("" +
-                "/seniorCashier.jsp", "/seniorDeleteCheck.jsp", "/seniorDeleteCheck.jsp", "/seniorDeleteProduct.jsp",
-                "/report.jsp",
-                "/cancel%20order", "/deleteOrder"));
+                "/seniorCashier.jsp", "/seniorDeleteCheck.jsp", "/seniorDeleteCheck.jsp", "/seniorDeleteProduct.jsp", "" +
+                "/seniorChooseCheckForDeleteProduct.jsp", "/xReport.jsp", "" +
+                "/cancel%20order", "/cancel%20product", "/deleteOrder", "/deleteProduct", "/make%20X%20report"));
         // todo implement actions from actions holder
         roleRights.put(Roles.CASHIER, Arrays.asList("" +
                 "/cashier.jsp", "/cashierCart.jsp", "/check.jsp", "" +
-                "/open", "/cart", "/close","/closeCheck", "/change"));
+                "/open", "/cart", "/close", "/closeCheck", "/change"));
         // todo implement actions to map from actions holder and separate user jsp
         roleRights.put(Roles.COMMODITY_EXPERT, Arrays.asList("" +
                 "/commodityExpertAllProducts.jsp", "/commodityExpertChangeProductQuantity.jsp", "" +
@@ -57,7 +57,7 @@ public class SessionFilter implements Filter {
 
         // todo implement back button on browser
         // todo implement check session on existing registered user
-        if (action.equals("/login.jsp") || action.equals("/error.jsp")) {
+        if (action.equals("/login.jsp") || action.equals("/report.jsp")) {
             return true;
         }
 

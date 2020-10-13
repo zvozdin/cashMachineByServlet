@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Commodity Expert</title>
+    <title>${sessionScope.ROLE}</title>
     <link rel="icon" href="data:,">
 </head>
 <body>

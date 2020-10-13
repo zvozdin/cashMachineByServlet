@@ -1,44 +1,68 @@
 package ua.com.training.dao.entity;
 
 import java.sql.Timestamp;
-import java.util.List;
 
 public class Check {
 
-    private String user;
+    private String login;
     private Timestamp date;
-    private int check_code;
-    private List<Order> orders;
+    private int checkCode;
+    private Order order;
 
-    public void setCheckCode(int check_code) {
-        this.check_code = check_code;
+    public Check(CheckBuilder checkBuilder) {
+        this.login = checkBuilder.login;
+        this.date = checkBuilder.date;
+        this.checkCode = checkBuilder.checkCode;
+        this.order = checkBuilder.order;
     }
 
-    public void setDate(Timestamp date) {
-        this.date = date;
-    }
-
-    public void setLogin(String user) {
-        this.user = user;
-    }
-
-    public String getUser() {
-        return user;
+    public String getLogin() {
+        return login;
     }
 
     public Timestamp getDate() {
         return date;
     }
 
-    public int getCheck_code() {
-        return check_code;
+    public int getCheckCode() {
+        return checkCode;
     }
 
-    public List<Order> getOrders() {
-        return orders;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
+    public static class CheckBuilder {
+
+        private String login;
+        private Timestamp date;
+        private int checkCode;
+        private Order order;
+
+        public CheckBuilder() {
+        }
+
+        public CheckBuilder login(String login) {
+            this.login = login;
+            return this;
+        }
+
+        public CheckBuilder date(Timestamp date) {
+            this.date = date;
+            return this;
+        }
+
+        public CheckBuilder checkCode(int checkCode) {
+            this.checkCode = checkCode;
+            return this;
+        }
+        public CheckBuilder order(Order order) {
+            this.order = order;
+            return this;
+        }
+
+        public Check build() {
+            return new Check(this);
+        }
     }
 }

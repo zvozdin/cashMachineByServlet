@@ -4,13 +4,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CASHIER</title>
+<title>CHECK</title>
 <link rel="icon" href="data:,">
 </head>
 <body>
     <c:set var = "bill" scope = "request" value = "0"/>
 	Success!
-    <br>
+    <hr/>
 	Your order: #${sessionScope.checkCode}
     <br>
     ----------------------

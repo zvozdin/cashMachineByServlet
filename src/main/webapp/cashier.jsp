@@ -4,12 +4,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>CASHIER</title>
+<title>${sessionScope.ROLE}</title>
 <link rel="icon" href="data:," >
 </head>
 <body>
 	Products:
-	<br>
+	<hr/>
     <form action="cart" method "post" >
         <c:forEach var="product" items="${sessionScope.products}" varStatus="loop" >
             code #${product.code} ${product.name} Size: ${product.size} Price: ${product.price} Quantity =>

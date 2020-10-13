@@ -9,7 +9,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 
 public class ChecksDao extends Dao {
 
@@ -20,34 +19,56 @@ public class ChecksDao extends Dao {
     private static final String DELETE_CHECK_BY_CHECK_CODE = "DELETE FROM checks WHERE check_code=?";
 
     private static final String SELECT_ORDER_BY_CHECK_CODE = "" +
-            "select checks.check_code, stock.code, stock.name, stock.size, orders.price, orders.quantity, orders.bill " +
+            "select checks.check_code, stock.id, stock.code, stock.name, stock.size, orders.price, orders.quantity, orders.bill " +
             "from checks " +
             "inner join orders on checks.id = orders.check_id " +
             "inner join stock on orders.product_id = stock.id " +
             "where checks.check_code = ?";
 
     public List<Check> findAllChecks() {
-        List<Check> checks = new LinkedList<>();
+        List<Check> result = new LinkedList<>();
         try (Connection connection = DatabaseConnectionPool.getConnection();
              Statement statement = connection.createStatement()
         ) {
             try (ResultSet resultSet = statement.executeQuery(FIND_ALL_ORDERS)) {
                 while (resultSet.next()) {
-                    Check check = new Check();
-                    check.setCheckCode(resultSet.getInt("check_code"));
-                    check.setDate(resultSet.getTimestamp("date"));
-                    check.setLogin(resultSet.getString("user"));
-                    checks.add(check);
+                    result.add(
+                            new Check.CheckBuilder()
+                                    .checkCode(resultSet.getInt("check_code"))
+                                    .login(resultSet.getString("user"))
+                                    .date(resultSet.getTimestamp("date"))
+                                    .build());
                 }
-                return checks;
             }
+
+            return result;
         } catch (SQLException e) {
             // todo log exception
             e.printStackTrace();
         }
+
         return new ArrayList<>();
     }
 
+    public List<Check> findAllChecksWithProducts() {
+        List<Check> result = new LinkedList<>();
+        for (Check check : findAllChecks()) {
+            Order order = findOrderByCheckCode(check.getCheckCode());
+            if (order.getProducts().isEmpty()) {
+                return result;
+            }
+
+            result.add(
+                    new Check.CheckBuilder()
+                            .checkCode(check.getCheckCode())
+                            .date(check.getDate())
+                            .login(check.getLogin())
+                            .order(order)
+                            .build());
+        }
+
+        return result;
+    }
 
     public boolean deleteOrderByCheckCode(int checkCode) {
         try (Connection connection = DatabaseConnectionPool.getConnection();
@@ -64,23 +85,21 @@ public class ChecksDao extends Dao {
         } catch (SQLException e) {
             // todo log exception
             e.printStackTrace();
-
         }
 
         return false;
     }
 
-    public Optional<Order> findOrderByCheckCode(int checkCode) {
+    public Order findOrderByCheckCode(int checkCode) {
         try (Connection connection = DatabaseConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ORDER_BY_CHECK_CODE)
         ) {
-            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-
             List<Product> products = new ArrayList<>();
             statement.setInt(1, checkCode);
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     products.add(new Product.ProductBuilder()
+                            .id(Long.valueOf(resultSet.getInt("id")))
                             .code(resultSet.getString("code"))
                             .name(resultSet.getString("name"))
                             .size(Size.valueOf(resultSet.getString("size").toUpperCase()))
@@ -91,16 +110,15 @@ public class ChecksDao extends Dao {
                 }
             }
 
-            return Optional.ofNullable(
-                    new Order.OrderBuilder()
-                            .checkCode(checkCode)
-                            .products(products)
-                            .build());
+            return new Order.OrderBuilder()
+                    .checkCode(checkCode)
+                    .products(products)
+                    .build();
         } catch (SQLException e) {
             // todo log exception
             e.printStackTrace();
         }
 
-        return Optional.empty();
+        return new Order.OrderBuilder().build();
     }
 }

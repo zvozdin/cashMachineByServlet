@@ -54,7 +54,7 @@ public class StockDao extends Dao {
             statement.setString(3, product.getSize().name());
             statement.setInt(4, product.getQuantity());
             statement.setDouble(5, product.getPrice());
-
+            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             if (statement.executeUpdate() > 0) {
                 return true;
             }
@@ -71,6 +71,7 @@ public class StockDao extends Dao {
         ) {
             statement.setInt(1, quantity);
             statement.setString(2, code);
+            connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             if (statement.executeUpdate() > 0) {
                 return true;
             }

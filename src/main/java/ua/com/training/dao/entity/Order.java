@@ -76,8 +76,7 @@ public class Order {
         }
 
         public Order build() {
-            Order order = new Order(this);
-            return order;
+            return new Order(this);
         }
     }
 }
