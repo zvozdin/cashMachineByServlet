@@ -26,6 +26,7 @@ CREATE TABLE stock
 	id INT AUTO_INCREMENT NOT NULL,
     code VARCHAR(20) UNIQUE NOT NULL,
 	name VARCHAR(20) NOT NULL,
+    name_UA VARCHAR(20) NOT NULL,
     size VARCHAR(20) NOT NULL NULL,
     quantity INT NOT NULL,
     price double NOT NULL,
@@ -65,39 +66,41 @@ values
 insert into users
 (login, password, role_id) 
 values 
-('admin', 'admin', 1),
-('cashier1', '11111', 2),
-('cashier2', '77777', 2),
-('expert1', '00000', 3);
+('admin', '0', 1),
+('cashier1', '0', 2),
+('cashier2', '0', 2),
+('expert1', '0', 3);
 
 insert into stock
-(code, name, size, quantity, price) 
+(code, name, name_UA, size, quantity, price) 
 values 
-('1001', 'jacket', 'L', 20, 50),
-('1002', 'jacket', 'M', 30, 50),
-('2001', 'shirt', 'S', 15, 20),
-('2002', 'shirt', 'L', 20, 20);
+('1001', 'Jacket', 'Куртка', 'L', 20, 50),
+('1002', 'Jacket', 'Куртка', 'M', 30, 50),
+('2001', 'Shirt', 'Сорочка', 'S', 15, 20),
+('2002', 'Shirt', 'Сорочка', 'L', 15, 20),
+('3001', 'T-shirt', 'Футболка', 'S', 30, 30),
+('3002', 'T-shirt', 'Футболка', 'M', 45, 30),
+('4001', 'Pullover', 'Светр', 'S', 80, 60),
+('4002', 'Pullover', 'Светр', 'M', 60, 60),
+('5001', 'Hat', 'Капелюх', 'S', 30, 40),
+('5002', 'Hat', 'Капелюх', 'L', 25, 40);
 
-insert into checks(user_id, check_code) values (3, 1000);
-insert into checks(user_id, check_code) values (2, 1011);
-insert into checks(user_id, check_code) values (2, 1010);
-insert into checks(user_id, check_code) values (2, 1012);
-insert into checks(user_id, check_code) values (3, 1013);
-insert into checks(user_id, check_code) values (3, 1014);
-insert into checks(user_id, check_code) values (3, 1015);
-insert into orders(check_id, product_id, quantity, price, bill) values (1, 1, 1, 1, 1);
-insert into orders(check_id, product_id, quantity, price, bill) values (1, 2, 100, 1, 1);
-insert into orders(check_id, product_id, quantity, price, bill) values (2, 3, 100, 1, 1);
-insert into orders(check_id, product_id, quantity, price, bill) values (2, 4, 100, 1, 1);
-insert into orders(check_id, product_id, quantity, price, bill) values (3, 1, 100, 1, 1);
-insert into orders(check_id, product_id, quantity, price, bill) values (3, 4, 100, 1, 1);
-insert into orders(check_id, product_id, quantity, price, bill) values (4, 4, 100, 1, 1);
-insert into orders(check_id, product_id, quantity, price, bill) values (4, 1, 100, 1, 1);
-insert into orders(check_id, product_id, quantity, price, bill) values (6, 4, 100, 1, 1);
-insert into orders(check_id, product_id, quantity, price, bill) values (6, 4, 100, 1, 1);
-insert into orders(check_id, product_id, quantity, price, bill) values (7, 4, 100, 1, 1);
+insert into checks
+(user_id, check_code) 
+values 
+(3, 1000),
+(2, 1011),
+(2, 1012);
 
-insert into orders(check_id, product_id, quantity, price, bill) values (1, 1, 300, 1, 1);
+insert into orders
+(check_id, product_id, quantity, price, bill)
+values 
+(1, 1, 5, 20, quantity * price),
+(1, 3, 7, 15, quantity * price),
+(1, 5, 3, 10, quantity * price),
+(2, 1, 5, 20, quantity * price),
+(2, 1, 5, 20, quantity * price),
+(3, 9, 2, 40, quantity * price);
 
 DELIMITER | 
 DROP TRIGGER IF EXISTS delete_product;|

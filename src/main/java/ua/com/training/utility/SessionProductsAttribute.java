@@ -31,6 +31,7 @@ public final class SessionProductsAttribute {
                                 .id(product.getId())
                                 .code(product.getCode())
                                 .name(product.getName())
+                                .name_UA(product.getName_UA())
                                 .size(product.getSize())
                                 .quantity(Integer.parseInt(parameter))
                                 .price(product.getPrice())

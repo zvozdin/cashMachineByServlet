@@ -15,8 +15,7 @@
 <body>
     <a href="?language=en">English</a> |
     <a href="?language=ua">Українська</a>
-    <hr/>
-    <fmt:message key = "label.welcome" />
+    <hr color="green"  width="100%" >    <fmt:message key = "label.welcome" />
 	<form action="login" method="post">
 	    <c:forEach items="${roles}" var="role">
             <input type="radio" name="role" value="${role}" required />

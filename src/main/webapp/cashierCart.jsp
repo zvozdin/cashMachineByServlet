@@ -17,20 +17,35 @@
     <a href="logout" ><fmt:message key = "logout.button.submit" /></a> |
     <a href="?language=en">English</a> |
     <a href="?language=ua">Українська</a>
+    <hr color="green"  width="100%" >
+	<fmt:message key = "product.label.cart" />:
     <hr/>
-	Current Check:
-	<br>
     <form action="" method "post">
         <c:forEach var="product" items="${sessionScope.order.products}">
-            code #${product.code} ${product.name} Size: ${product.size} Price: ${product.price} Quantity =>
-            <input type="number" min="0" max="${product.quantity}" name="${product.code}" value="${product.quantity}" required />
+            <fmt:message key = "product.label.code" /> #${product.code} <br>
+            <fmt:message key = "product.label.name" />
+            <c:choose>
+                <c:when test="${language == 'ua'}" >
+                    ${product.name_UA}
+                </c:when>
+                <c:otherwise>
+                    ${product.name}
+                </c:otherwise>
+            </c:choose>
             <br>
+            <fmt:message key = "product.label.size" /> ${product.size} <br>
+            <fmt:message key = "product.label.price" /> ${product.price} <fmt:message key = "product.label.currency" /> <br>
+            <fmt:message key = "product.label.quantity" />
+            <input type="number" min="0" max="${product.quantity}" name="${product.code}" value="${product.quantity}" required />
+            <hr/>
         </c:forEach>
         <br>
-        <button type="submit" formaction="open">Change check</button>
-        <button type="submit" formaction="closeCheck">Close check</button>
+        <button type="submit" formaction="open">
+            <fmt:message key="changeCart.button.submit" />
+        </button>
+        <button type="submit" formaction="closeCheck">
+            <fmt:message key="closeCheck.button.submit" />
+        </button>
     </form>
-    <br>
-	<a href="mainUser.jsp">main</a> <a href="logout">logout</a>
 </body>
 </html>

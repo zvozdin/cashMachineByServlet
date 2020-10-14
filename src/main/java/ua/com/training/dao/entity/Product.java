@@ -5,6 +5,7 @@ public class Product {
     private Long id;
     private String code;
     private String name;
+    private String name_UA;
     private Size size;
     private Double price;
     private Integer quantity;
@@ -14,6 +15,7 @@ public class Product {
         this.id = productBuilder.id;
         this.code = productBuilder.code;
         this.name = productBuilder.name;
+        this.name_UA = productBuilder.name_UA;
         this.size = productBuilder.size;
         this.price = productBuilder.price;
         this.quantity = productBuilder.quantity;
@@ -30,6 +32,10 @@ public class Product {
 
     public String getName() {
         return name;
+    }
+
+    public String getName_UA() {
+        return name_UA;
     }
 
     public Double getPrice() {
@@ -53,6 +59,7 @@ public class Product {
         private Long id;
         private String code;
         private String name;
+        private String name_UA;
         private Double price;
         private Integer quantity;
         private Size size;
@@ -73,6 +80,11 @@ public class Product {
 
         public ProductBuilder name(String name) {
             this.name = name;
+            return this;
+        }
+
+        public ProductBuilder name_UA(String name_UA) {
+            this.name_UA = name_UA;
             return this;
         }
 

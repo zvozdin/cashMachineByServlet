@@ -17,8 +17,7 @@
     <a href="logout" ><fmt:message key = "logout.button.submit" /></a> |
     <a href="?language=en">English</a> |
     <a href="?language=ua">Українська</a>
-    <hr/>
-	<fmt:message key = "label.welcome" /> ${sessionScope.user.login}
+    <hr color="green"  width="100%" >	<fmt:message key = "label.welcome" /> ${sessionScope.user.login}
 	<hr/>
 	<fmt:message key = "label.menu" />:
 	<br>

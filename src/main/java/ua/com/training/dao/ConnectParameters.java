@@ -18,7 +18,6 @@ public class ConnectParameters {
     static Integer maxIdle;
     static Integer maxOpenPStatements;
 
-    // todo implement HikariCP lib as most popular https://www.baeldung.com/hikaricp
     // todo Однако в реальной среде Java EE вы должны делегировать создание DataSource контейнеру / серверу приложений
     // и получить его от JNDI. В случае Tomcat см. Также, например,
     // этот документ: http://tomcat.apache.org/tomcat-6.0-doc/jndi-resources-howto.html

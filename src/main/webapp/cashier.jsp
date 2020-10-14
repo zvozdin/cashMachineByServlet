@@ -17,15 +17,24 @@
     <a href="logout" ><fmt:message key = "logout.button.submit" /></a> |
     <a href="?language=en">English</a> |
     <a href="?language=ua">Українська</a>
-    <hr/>
-	<fmt:message key = "product.label.products" />:
+    <hr color="green"  width="100%" >
+    <fmt:message key = "product.label.products" />:
 	<hr/>
     <form action="cart" method "post" >
         <c:forEach var="product" items="${sessionScope.products}" varStatus="loop" >
             <fmt:message key = "product.label.code" /> #${product.code} <br>
-            <fmt:message key = "product.label.name" /> <fmt:message key = "product.label.name.${product.name}" /><br>
+            <fmt:message key = "product.label.name" />
+            <c:choose>
+                <c:when test="${language == 'ua'}" >
+                    ${product.name_UA}
+                </c:when>
+                <c:otherwise>
+                    ${product.name}
+                </c:otherwise>
+            </c:choose>
+            <br>
             <fmt:message key = "product.label.size" /> ${product.size} <br>
-            <fmt:message key = "product.label.price" /> ${product.price} <br>
+            <fmt:message key = "product.label.price" /> ${product.price} <fmt:message key = "product.label.currency" /> <br>
             <fmt:message key = "product.label.quantity" />
             <input type="number" min="1" max="${product.quantity}" name="${product.code}" /> <br>
             <fmt:message key = "product.label.inStock" /> [${product.quantity}]
@@ -35,6 +44,5 @@
         <fmt:message key="cart.button.submit" var="buttonValue" />
         <input type="submit" value="${buttonValue}" />
     </form>
-    <br>
 </body>
 </html>

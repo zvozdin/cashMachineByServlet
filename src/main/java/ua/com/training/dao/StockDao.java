@@ -8,16 +8,11 @@ import java.util.*;
 
 public class StockDao extends Dao {
 
-    private static final String TABLE_NAME = "stock";
     private static final String FIND_ALL_PRODUCTS = "SELECT * FROM stock";
     private static final String INSERT_PRODUCT = "" +
-            "insert into stock(code, name, size, quantity, price) " +
-            "values (?, ?, ?, ?, ?)";
-    private static final String UPDATE_PRODUCT_QUANTITY_BY_CODE = "update stock set quantity=? where code=?";
-
-    public Set<String> getColumns() {
-        return getColumns(TABLE_NAME);
-    }
+            "insert into stock(code, name, name_UA, size, quantity, price) " +
+            "values (?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_PRODUCT_QUANTITY_BY_CODE = "update stock set quantity = ? where code = ?";
 
     public List<Product> findAllProducts() {
         List<Product> products = new ArrayList<>();
@@ -31,6 +26,7 @@ public class StockDao extends Dao {
                                     .id(resultSet.getLong("id"))
                                     .code(resultSet.getString("code"))
                                     .name(resultSet.getString("name"))
+                                    .name_UA(resultSet.getString("name_UA"))
                                     .size(Size.valueOf(resultSet.getString("size").toUpperCase()))
                                     .quantity(resultSet.getInt("quantity"))
                                     .price(resultSet.getDouble("price"))
@@ -51,9 +47,10 @@ public class StockDao extends Dao {
         ) {
             statement.setString(1, product.getCode());
             statement.setString(2, product.getName());
-            statement.setString(3, product.getSize().name());
-            statement.setInt(4, product.getQuantity());
-            statement.setDouble(5, product.getPrice());
+            statement.setString(3, product.getName_UA());
+            statement.setString(4, product.getSize().name());
+            statement.setInt(5, product.getQuantity());
+            statement.setDouble(6, product.getPrice());
             connection.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
             if (statement.executeUpdate() > 0) {
                 return true;

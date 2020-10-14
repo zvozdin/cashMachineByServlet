@@ -14,6 +14,7 @@
                 <tr>
                     <th>code</th>
                     <th>name</th>
+                    <th>name_UA</th>
                     <th>size</th>
                     <th>price</th>
                     <th>quantity</th>
@@ -21,6 +22,7 @@
                 <tr>
                     <td><input type="text" name="code" pattern="[a-zA-Z0-9\S]{1,15}" required /></td>
                     <td><input type="text" name="name" pattern="[a-zA-Z\S]{1,15}" required /></td>
+                    <td><input type="text" name="name_UA" pattern="[а-яА-ЯїЇіІєЄ^И\S]{1,15}" required /></td>
                     <td><input type="text" name="size" pattern="[SML]{1,}" required /></td>
                     <td><input type="number" name="price" pattern="\d+\.?\d*" required /></td>
                     <td><input type="number" name="quantity" min="0" required /></td>

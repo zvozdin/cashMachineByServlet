@@ -19,7 +19,7 @@ public class ChecksDao extends Dao {
     private static final String DELETE_CHECK_BY_CHECK_CODE = "DELETE FROM checks WHERE check_code=?";
 
     private static final String SELECT_ORDER_BY_CHECK_CODE = "" +
-            "select checks.check_code, stock.id, stock.code, stock.name, stock.size, orders.price, orders.quantity, orders.bill " +
+            "select checks.check_code, stock.id, stock.code, stock.name, stock.name_UA, stock.size, orders.price, orders.quantity, orders.bill " +
             "from checks " +
             "inner join orders on checks.id = orders.check_id " +
             "inner join stock on orders.product_id = stock.id " +
@@ -102,7 +102,8 @@ public class ChecksDao extends Dao {
                             .id(Long.valueOf(resultSet.getInt("id")))
                             .code(resultSet.getString("code"))
                             .name(resultSet.getString("name"))
-                            .size(Size.valueOf(resultSet.getString("size").toUpperCase()))
+                            .name_UA(resultSet.getString("name_UA"))
+                            .size(Size.valueOf(resultSet.getString("size")))
                             .price(resultSet.getDouble("price"))
                             .quantity(resultSet.getInt("quantity"))
                             .bill(resultSet.getDouble("bill"))

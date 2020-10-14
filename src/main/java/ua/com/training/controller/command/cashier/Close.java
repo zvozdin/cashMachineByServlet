@@ -15,6 +15,10 @@ import java.util.List;
 
 public class Close implements Action {
 
+    private static final String ORDER_DOESNT_EXIST = "message01";
+    private static final String CHECK_IS_EMPTY = "message02";
+    private static final String CANT_CLOSE_ORDER = "message03";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
@@ -31,19 +35,19 @@ public class Close implements Action {
             return "check.jsp";
         }
 
-        session.setAttribute("report", "can't close order. Check product quantity");
+        session.setAttribute("report", CANT_CLOSE_ORDER);
         return "report.jsp";
     }
 
     private boolean isOrderNotValid(HttpSession session, Order order) {
         if (order == null) {
-            session.setAttribute("report", "order doesn't exist");
+            session.setAttribute("report", ORDER_DOESNT_EXIST);
             return true;
         }
 
         List<Product> products = order.getProducts();
         if (products == null || products.size() == 0) {
-            session.setAttribute("report", "check is empty.");
+            session.setAttribute("report", CHECK_IS_EMPTY);
             return true;
         }
 

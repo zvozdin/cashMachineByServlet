@@ -14,6 +14,7 @@
                 <th>id</th>
                 <th>code</th>
                 <th>name</th>
+                <th>name_UA</th>
                 <th>size</th>
                 <th>price</th>
                 <th>quantity</th>
@@ -23,6 +24,7 @@
                     <td style="text-align:center" >${product.id}</td>
                     <td style="text-align:center" >${product.code}</td>
                     <td style="text-align:center" >${product.name}</td>
+                    <td style="text-align:center" >${product.name_UA}</td>
                     <td style="text-align:center" >${product.size}</td>
                     <td style="text-align:center" >${product.price}</td>
                     <td style="text-align:center" >${product.quantity}</td>

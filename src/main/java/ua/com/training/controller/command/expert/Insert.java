@@ -18,6 +18,7 @@ public class Insert implements Action {
                 new Product.ProductBuilder()
                         .code(request.getParameter("code"))
                         .name(request.getParameter("name"))
+                        .name_UA(request.getParameter("name_UA"))
                         .size(Size.valueOf(request.getParameter("size")))
                         .price(Double.parseDouble(request.getParameter("price")))
                         .quantity(Integer.parseInt(request.getParameter("quantity")))
