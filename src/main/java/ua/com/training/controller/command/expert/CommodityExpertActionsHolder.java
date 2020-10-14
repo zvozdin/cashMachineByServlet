@@ -1,7 +1,6 @@
 package ua.com.training.controller.command.expert;
 
 import ua.com.training.controller.command.*;
-import ua.com.training.controller.command.common.Change;
 
 import java.util.*;
 
@@ -13,7 +12,7 @@ public class CommodityExpertActionsHolder {
         actions = new HashMap<>();
         actions.put("/view", new View());
         actions.put("/add", new Add());
-        actions.put("/changeExpert", new Change());
+        actions.put("/changeExpert", new ChangeProductQuantity());
         actions.put("/update", new Update());
         actions.put("/insert", new Insert());
     }

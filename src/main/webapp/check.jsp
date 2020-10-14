@@ -25,7 +25,7 @@
     <br>
     --------------------------
     <br>
-    <c:forEach var="product" items="${sessionScope.order.products}" varStatus="loop">
+    <c:forEach var="product" items="${sessionScope.cart}" varStatus="loop">
         ${loop.count}.
         #${product.code}
         <c:choose>
@@ -49,5 +49,6 @@
 	<c:remove var="bill" scope="request" />
 	<c:remove var="checkCode" scope="session" />
 	<c:remove var="cart" scope="session" />
+	<c:remove var="order" scope="session" />
 </body>
 </html>

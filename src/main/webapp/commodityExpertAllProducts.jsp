@@ -19,7 +19,7 @@
                 <th>price</th>
                 <th>quantity</th>
             </tr>
-            <c:forEach items="${sessionScope.products}" var="product">
+            <c:forEach items="${sessionScope.allProducts}" var="product">
                 <tr>
                     <td style="text-align:center" >${product.id}</td>
                     <td style="text-align:center" >${product.code}</td>

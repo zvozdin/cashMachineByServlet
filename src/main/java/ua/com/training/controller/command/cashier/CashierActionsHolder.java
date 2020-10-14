@@ -1,7 +1,6 @@
 package ua.com.training.controller.command.cashier;
 
-import ua.com.training.controller.command.*;
-import ua.com.training.controller.command.common.Change;
+import ua.com.training.controller.command.Action;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,7 +14,7 @@ public class CashierActionsHolder {
         actions = new HashMap<>();
         actions.put("/open", new Open());
         actions.put("/cart", new Cart());
-        actions.put("/changeCashier", new Change());
+        actions.put("/changeCashier", new ChangeCart());
         actions.put("/closeCheck", new Close());
         actions.put("/close", new Cart());
     }

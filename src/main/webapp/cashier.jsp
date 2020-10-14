@@ -15,13 +15,15 @@
 <body>
     <a href="mainUser.jsp" ><fmt:message key = "label.main" /></a> |
     <a href="logout" ><fmt:message key = "logout.button.submit" /></a> |
+    <a href="cart" ><fmt:message key = "cart.button.submit" /></a> |
     <a href="?language=en">English</a> |
     <a href="?language=ua">Українська</a>
     <hr color="green"  width="100%" >
     <fmt:message key = "product.label.products" />:
 	<hr/>
-    <form action="cart" method "post" >
-        <c:forEach var="product" items="${sessionScope.products}" varStatus="loop" >
+
+    <c:forEach var="product" items="${sessionScope.products}" varStatus="loop" >
+        <form action="cart" method "post" >
             <fmt:message key = "product.label.code" /> #${product.code} <br>
             <fmt:message key = "product.label.name" />
             <c:choose>
@@ -36,13 +38,16 @@
             <fmt:message key = "product.label.size" /> ${product.size} <br>
             <fmt:message key = "product.label.price" /> ${product.price} <fmt:message key = "product.label.currency" /> <br>
             <fmt:message key = "product.label.quantity" />
-            <input type="number" min="1" max="${product.quantity}" name="${product.code}" /> <br>
+            <input type="number" min="1" max="${product.quantity}" name="${product.code}" />
+            <fmt:message key="cart.button.submit" var="buttonValue" />
+            <input type="submit" value="${buttonValue}" /><br>
             <fmt:message key = "product.label.inStock" /> [${product.quantity}]
-	        <hr/>
-        </c:forEach>
-        <br>
-        <fmt:message key="cart.button.submit" var="buttonValue" />
-        <input type="submit" value="${buttonValue}" />
-    </form>
+        	<hr/>
+        </form>
+    </c:forEach>
+
+    <c:forEach begin="1" end="${maxPageNum}" varStatus="loop" >
+        <a href="open?page=${loop.count}">${loop.count}</a>
+    </c:forEach>
 </body>
 </html>

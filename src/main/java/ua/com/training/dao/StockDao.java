@@ -8,18 +8,41 @@ import java.util.*;
 
 public class StockDao extends Dao {
 
-    private static final String FIND_ALL_PRODUCTS = "SELECT * FROM stock";
+    private static final String FIND_PAGE_PRODUCTS = "SELECT * FROM stock limit ?, ?";
+
     private static final String INSERT_PRODUCT = "" +
             "insert into stock(code, name, name_UA, size, quantity, price) " +
             "values (?, ?, ?, ?, ?, ?)";
+
     private static final String UPDATE_PRODUCT_QUANTITY_BY_CODE = "update stock set quantity = ? where code = ?";
 
-    public List<Product> findAllProducts() {
-        List<Product> products = new ArrayList<>();
+    private static final String SELECT_COUNT = "select count(*) as total_rows from stock";
+
+    public int getRowsCount() {
         try (Connection connection = DatabaseConnectionPool.getConnection();
              Statement statement = connection.createStatement()
         ) {
-            try (ResultSet resultSet = statement.executeQuery(FIND_ALL_PRODUCTS)) {
+            try (ResultSet resultSet = statement.executeQuery(SELECT_COUNT)
+            ) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("total_rows");
+                }
+            }
+        } catch (SQLException e) {
+            // todo log exception
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Product> findAllProducts(int offset, int size) {
+        List<Product> products = new ArrayList<>();
+        try (Connection connection = DatabaseConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_PAGE_PRODUCTS)
+        ) {
+            statement.setInt(1, offset);
+            statement.setInt(2, size);
+            try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     products.add(
                             new Product.ProductBuilder()

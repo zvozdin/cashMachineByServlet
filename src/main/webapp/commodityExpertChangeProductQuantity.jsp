@@ -10,7 +10,7 @@
 <body>
     <form action="update" method "post">
         <select name="code">
-            <c:forEach var="product" items="${sessionScope.products}">
+            <c:forEach var="product" items="${sessionScope.allProducts}">
                 <option value="${product.code}">
                     ${product.code} ${product.name} ${product.size}
                 </option>

@@ -21,7 +21,7 @@
 	<fmt:message key = "product.label.cart" />:
     <hr/>
     <form action="" method "post">
-        <c:forEach var="product" items="${sessionScope.order.products}">
+        <c:forEach var="product" items="${sessionScope.cart}">
             <fmt:message key = "product.label.code" /> #${product.code} <br>
             <fmt:message key = "product.label.name" />
             <c:choose>
@@ -41,7 +41,7 @@
         </c:forEach>
         <br>
         <button type="submit" formaction="open">
-            <fmt:message key="changeCart.button.submit" />
+            <fmt:message key="addProduct.button.submit" />
         </button>
         <button type="submit" formaction="closeCheck">
             <fmt:message key="closeCheck.button.submit" />

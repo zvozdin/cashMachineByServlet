@@ -24,12 +24,13 @@ public class Close implements Action {
         HttpSession session = request.getSession();
         Order order = (Order) session.getAttribute("order");
 
-        if (isOrderNotValid(session, order)) {
+        List<Product> cart = (List<Product>) session.getAttribute("cart");
+
+        if (isOrderNotValid(session, order, cart)) {
             return "report.jsp";
         }
 
-        List<Product> products = order.getProducts();
-        int checkCode = new OrdersDao().save(products, (User) session.getAttribute("user"));
+        int checkCode = new OrdersDao().save(cart, (User) session.getAttribute("user"));
         if (checkCode > 0) {
             session.setAttribute("checkCode", checkCode);
             return "check.jsp";
@@ -39,13 +40,12 @@ public class Close implements Action {
         return "report.jsp";
     }
 
-    private boolean isOrderNotValid(HttpSession session, Order order) {
+    private boolean isOrderNotValid(HttpSession session, Order order, List<Product> products) {
         if (order == null) {
             session.setAttribute("report", ORDER_DOESNT_EXIST);
             return true;
         }
 
-        List<Product> products = order.getProducts();
         if (products == null || products.size() == 0) {
             session.setAttribute("report", CHECK_IS_EMPTY);
             return true;
