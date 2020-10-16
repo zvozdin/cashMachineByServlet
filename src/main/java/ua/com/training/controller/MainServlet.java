@@ -17,10 +17,9 @@ import java.util.Map;
 
 public class MainServlet extends HttpServlet {
 
-    private Map<String, Action> actions;
+    private final Map<String, Action> actions;
 
     public MainServlet() {
-        // todo initialize in another place or class
         actions = new HashMap<>();
         actions.put("/login", new Login());
         actions.put("/logout", new Logout());

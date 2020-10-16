@@ -10,11 +10,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class ChecksDao extends Dao {
+public class ChecksDao {
 
-    private static final String FIND_ALL_ORDERS = "" +
+    private static final String FIND_PAGE_ORDERS = "" +
             "select checks.check_code as check_code, checks.dataTime as date, users.login as user " +
-            "from users inner join checks on users.id = checks.user_id;";
+            "from users inner join checks on users.id = checks.user_id limit ?, ?";
 
     private static final String DELETE_CHECK_BY_CHECK_CODE = "DELETE FROM checks WHERE check_code=?";
 
@@ -25,12 +25,33 @@ public class ChecksDao extends Dao {
             "inner join stock on orders.product_id = stock.id " +
             "where checks.check_code = ?";
 
-    public List<Check> findAllChecks() {
-        List<Check> result = new LinkedList<>();
+    private static final String SELECT_COUNT = "select count(*) as total_rows from checks";
+
+    public int getRowsCount() {
         try (Connection connection = DatabaseConnectionPool.getConnection();
              Statement statement = connection.createStatement()
         ) {
-            try (ResultSet resultSet = statement.executeQuery(FIND_ALL_ORDERS)) {
+            try (ResultSet resultSet = statement.executeQuery(SELECT_COUNT)
+            ) {
+                if (resultSet.next()) {
+                    return resultSet.getInt("total_rows");
+                }
+            }
+        } catch (SQLException e) {
+            // todo log exception
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Check> findAllChecks(int offset, int size) {
+        List<Check> result = new LinkedList<>();
+        try (Connection connection = DatabaseConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_PAGE_ORDERS)
+        ) {
+            statement.setInt(1, offset);
+            statement.setInt(2, size);
+            try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
                     result.add(
                             new Check.CheckBuilder()
@@ -50,9 +71,9 @@ public class ChecksDao extends Dao {
         return new ArrayList<>();
     }
 
-    public List<Check> findAllChecksWithProducts() {
+    public List<Check> findAllChecksWithProducts(int offset, int size) {
         List<Check> result = new LinkedList<>();
-        for (Check check : findAllChecks()) {
+        for (Check check : findAllChecks(offset, size)) {
             Order order = findOrderByCheckCode(check.getCheckCode());
             if (order.getProducts().isEmpty()) {
                 return result;

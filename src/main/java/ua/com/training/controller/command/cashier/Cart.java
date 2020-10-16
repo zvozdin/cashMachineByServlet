@@ -15,9 +15,6 @@ import java.util.Optional;
 
 public class Cart implements Action {
 
-    private static final String ORDER_DOESNT_EXIST = "message01";
-    private static final String CHECK_IS_EMPTY = "message02";
-
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
@@ -34,29 +31,7 @@ public class Cart implements Action {
             session.setAttribute("cart", cart);
         }
 
-        if (isEmptyCartAndOrder(session, cart)) {
-            return "report.jsp";
-        }
-
         return "cashierCart.jsp";
-    }
-
-    private boolean isEmptyCartAndOrder(HttpSession session, List<Product> cart) {
-        if (session.getAttribute("order") == null) {
-            session.setAttribute("report", ORDER_DOESNT_EXIST);
-            return true;
-        }
-
-        if (session.getAttribute("cart") == null && cart.size() == 0) {
-            session.setAttribute("report", CHECK_IS_EMPTY);
-            return true;
-        }
-
-        if (cart.size() > 0) {
-            session.setAttribute("cart", cart);
-        }
-
-        return false;
     }
 
     private Optional<Product> getProductsFromClient(HttpServletRequest request) {

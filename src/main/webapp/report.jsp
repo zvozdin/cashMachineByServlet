@@ -20,6 +20,5 @@
     <hr color="green"  width="100%" >
 
     <fmt:message key="report.label.${sessionScope.report}" />
-
 </body>
 </html>

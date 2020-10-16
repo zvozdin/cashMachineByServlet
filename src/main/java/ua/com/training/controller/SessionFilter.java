@@ -52,8 +52,6 @@ public class SessionFilter implements Filter {
         String action = request.getRequestURI().substring(request.getContextPath().length());
         HttpSession session = request.getSession(false);
 
-        // todo implement back button on browser
-        // todo implement check session on existing registered user
         if (action.equals("/login.jsp") || action.equals("/report.jsp")) {
             return true;
         }

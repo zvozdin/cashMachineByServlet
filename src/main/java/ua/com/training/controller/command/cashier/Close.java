@@ -2,7 +2,7 @@ package ua.com.training.controller.command.cashier;
 
 import ua.com.training.controller.command.Action;
 import ua.com.training.dao.OrdersDao;
-import ua.com.training.dao.entity.Order;
+import ua.com.training.dao.StockDao;
 import ua.com.training.dao.entity.Product;
 import ua.com.training.dao.entity.User;
 
@@ -11,28 +11,32 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public class Close implements Action {
 
-    private static final String ORDER_DOESNT_EXIST = "message01";
     private static final String CHECK_IS_EMPTY = "message02";
     private static final String CANT_CLOSE_ORDER = "message03";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
-        Order order = (Order) session.getAttribute("order");
+        Map<String, String[]> parameters = request.getParameterMap();
 
-        List<Product> cart = (List<Product>) session.getAttribute("cart");
-
-        if (isOrderNotValid(session, order, cart)) {
+        if (isCartEmpty(parameters)) {
+            session.setAttribute("report", CHECK_IS_EMPTY);
             return "report.jsp";
         }
 
-        int checkCode = new OrdersDao().save(cart, (User) session.getAttribute("user"));
+        List<Product> products = getProductsFromClient(parameters);
+        int checkCode = new OrdersDao()
+                .save(products, (User) session.getAttribute("user"));
         if (checkCode > 0) {
             session.setAttribute("checkCode", checkCode);
+            session.setAttribute("cart", products);
             return "check.jsp";
         }
 
@@ -40,17 +44,35 @@ public class Close implements Action {
         return "report.jsp";
     }
 
-    private boolean isOrderNotValid(HttpSession session, Order order, List<Product> products) {
-        if (order == null) {
-            session.setAttribute("report", ORDER_DOESNT_EXIST);
-            return true;
+    private boolean isCartEmpty(Map<String, String[]> map) {
+        return map == null || map.size() == 0 ? true : false;
+    }
+
+    private List<Product> getProductsFromClient(Map<String, String[]> map) {
+        List<Product> result = new ArrayList<>();
+        List<Product> products = new StockDao().findAllProducts(0, new StockDao().getRowsCount());
+        for (String productCode : map.keySet()) {
+            Optional<Product> oProduct =
+                    products.stream()
+                            .filter(p -> p.getCode().equals(productCode))
+                            .findFirst();
+
+            if (oProduct.isPresent()) {
+                Product product = oProduct.get();
+                result.add(
+                        new Product.ProductBuilder()
+                                .id(product.getId())
+                                .code(product.getCode())
+                                .name(product.getName())
+                                .name_UA(product.getName_UA())
+                                .size(product.getSize())
+                                .quantity(Integer.valueOf(map.get(productCode)[0]))
+                                .price(product.getPrice())
+                                .bill(Integer.valueOf(map.get(productCode)[0]) * product.getPrice())
+                                .build());
+            }
         }
 
-        if (products == null || products.size() == 0) {
-            session.setAttribute("report", CHECK_IS_EMPTY);
-            return true;
-        }
-
-        return false;
+        return result;
     }
 }

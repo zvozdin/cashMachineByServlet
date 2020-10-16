@@ -1,5 +1,6 @@
 package ua.com.training.controller.command.senior;
 
+import ua.com.training.controller.Page;
 import ua.com.training.controller.command.Action;
 import ua.com.training.dao.ChecksDao;
 import ua.com.training.dao.entity.Check;
@@ -15,40 +16,38 @@ public class Checks implements Action {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        HttpSession session = request.getSession();
-        String action = request.getRequestURI().substring(request.getContextPath().length());
+        String pageNumber = request.getParameter("page");
+        if (pageNumber == null || pageNumber.isEmpty()) {
+            pageNumber = "1";
+        }
+
+        String action = request.getRequestURI()
+                .substring(request.getContextPath().length());
         switch (action) {
             case "/cancelOrder":
-                return getOrderRequest(session, new ChecksDao().findAllChecks());
+                setPaginationForPage(request, pageNumber, action);
+                return "seniorDeleteCheck.jsp?page=" + Integer.valueOf(pageNumber);
             case "/cancelProduct":
-                return getProductRequest(session, new ChecksDao().findAllChecksWithProducts());
+                setPaginationForPage(request, pageNumber, action);
+                return "seniorChooseCheckForDeleteProduct.jsp?page=" + Integer.valueOf(pageNumber);
             default:
                 return "report.jsp";
         }
     }
 
-    private String getProductRequest(HttpSession session, List<Check> checks) {
-        if (isEmpty(session, checks))
-            return "report.jsp";
+    private void setPaginationForPage(HttpServletRequest request, String pageNumber, String operation) {
+        HttpSession session = request.getSession();
+        Integer total = new ChecksDao().getRowsCount();
+        Integer size = 3;
+        Integer maxPageNum = total % size == 0 ? (total / size) : (total / size + 1);
+        Page page = new Page(Integer.valueOf(pageNumber), size);
 
+        List<Check> checks =
+                operation.equals("/cancelOrder")
+                        ? new ChecksDao().findAllChecks(page.getOffset(), page.getSize())
+                        : new ChecksDao().findAllChecksWithProducts(page.getOffset(), page.getSize());
         session.setAttribute("checks", checks);
-        return "seniorChooseCheckForDeleteProduct.jsp";
-    }
-
-    private String getOrderRequest(HttpSession session, List<Check> checks) {
-        if (isEmpty(session, checks)) {
-            return "report.jsp";
-        } else {
-            session.setAttribute("checks", checks);
-            return "seniorDeleteCheck.jsp";
-        }
-    }
-
-    private boolean isEmpty(HttpSession session, List<Check> checks) {
-        if (checks.isEmpty()) {
-            session.setAttribute("report", "there is no checks today");
-            return true;
-        }
-        return false;
+        session.setAttribute("maxPageNum", maxPageNum);
+        session.setAttribute("page", page);
     }
 }

@@ -11,6 +11,9 @@ import java.io.IOException;
 
 public class DeleteProduct implements Action {
 
+    private static final String SUCCESS = "message01";
+    private static final String NO_CHECKS_TODAY = "there is no checks today";
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         HttpSession session = request.getSession();
@@ -19,9 +22,9 @@ public class DeleteProduct implements Action {
         int checkCode = Integer.parseInt(parameters[1]);
 
         if (new OrdersDao().deleteProductByCheckCodeAndProductId(checkCode, productId)) {
-            session.setAttribute("report", "Success");
+            session.setAttribute("report", SUCCESS);
         } else {
-            session.setAttribute("report", "there is no checks today");
+            session.setAttribute("report", NO_CHECKS_TODAY);
         }
 
         return "report.jsp";

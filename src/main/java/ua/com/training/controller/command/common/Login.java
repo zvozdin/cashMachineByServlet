@@ -14,7 +14,7 @@ import java.util.*;
 
 public class Login implements Action {
 
-    private static final String REGISTRATION_FIELDS_NOT_CORRECT = "Login or Password aren't correct";
+    private static final String REGISTRATION_FIELDS_NOT_CORRECT = "message04";
     private static Map<Roles, Set<String>> roleActivities;
 
     public Login() {

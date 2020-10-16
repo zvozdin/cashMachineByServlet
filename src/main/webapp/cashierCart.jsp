@@ -36,7 +36,7 @@
             <fmt:message key = "product.label.size" /> ${product.size} <br>
             <fmt:message key = "product.label.price" /> ${product.price} <fmt:message key = "product.label.currency" /> <br>
             <fmt:message key = "product.label.quantity" />
-            <input type="number" min="0" max="${product.quantity}" name="${product.code}" value="${product.quantity}" required />
+            <input type="number" min="1" name="${product.code}" value="${product.quantity}" required />
             <hr/>
         </c:forEach>
         <br>

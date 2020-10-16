@@ -6,7 +6,7 @@ import ua.com.training.dao.entity.Size;
 import java.sql.*;
 import java.util.*;
 
-public class StockDao extends Dao {
+public class StockDao {
 
     private static final String FIND_PAGE_PRODUCTS = "SELECT * FROM stock limit ?, ?";
 

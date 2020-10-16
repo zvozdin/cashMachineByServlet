@@ -38,7 +38,7 @@
             <fmt:message key = "product.label.size" /> ${product.size} <br>
             <fmt:message key = "product.label.price" /> ${product.price} <fmt:message key = "product.label.currency" /> <br>
             <fmt:message key = "product.label.quantity" />
-            <input type="number" min="1" max="${product.quantity}" name="${product.code}" />
+            <input type="number" min="1" max="${product.quantity}" name="${product.code}" required/>
             <fmt:message key="cart.button.submit" var="buttonValue" />
             <input type="submit" value="${buttonValue}" /><br>
             <fmt:message key = "product.label.inStock" /> [${product.quantity}]
